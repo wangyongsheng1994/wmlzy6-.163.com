@@ -1,0 +1,163 @@
+{include file="public/header"}
+<title>日志管理</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 日志中心 <span class="c-gray en">&gt;</span> 日志管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+	<span class="l">
+		<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe62b;</i>一键审批</a>
+	</span>
+	<span class="r">共有数据：<strong>88</strong> 条</span> </div>
+	<div class="mt-20">
+	<table class="table table-border table-bordered table-hover table-bg table-sort">
+		<thead>
+			<tr class="text-c">
+				<th width="25"><input type="checkbox" name="" value=""></th>
+				<th width="80">ID</th>
+				<th width="100">用户</th>
+				<th width="90">部门</th>
+				<th width="150">内容</th>
+				<th width="90">时间</th>
+				<th width="100">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			{if condition="(!empty($datas))"}
+			{foreach name="datas" item="vo"}
+			{if condition="(!empty($vo['logs']))"}
+			{foreach name="vo['logs']" item="voo"}	
+			<tr class="text-c">
+				<td><input type="checkbox" value="{$voo.id}" name=""></td>
+				<td>{$voo.id}</td>
+				<td>{$voo.name}</td>
+				<td>{$voo.title}</td>
+				<td>{$voo.content|mb_substr=0,15}... ...  <u style="cursor:pointer" class="text-primary"onclick=member_show('日志详情','{:url('detail',array('id'=>$voo.id))}','{$voo.id}','650','300')>查看全部</u></td>
+				<td>{$voo.time|date = "Y-m-d H:i:s"}</td>
+				<td class="td-manage">
+
+				<a style="text-decoration:none" onClick="admin_stop(this,'{$voo.id}')" href="javascript:;" title="审批"><i class="Hui-iconfont">待审批</i></a>
+
+				</td>
+			</tr>
+			{/foreach}
+			{else/}{/if}
+			{/foreach}
+
+			{else/}{/if}
+			{if condition="(!empty($log))"}
+			{foreach name="log" item="roo"}
+			<tr class="text-c">
+				<td><input type="checkbox" value="{$roo.id}" name=""></td>
+				<td>{$roo.id}</td>
+				<td>{$roo.name}</td>
+				<td>{$roo.title}</td>
+				<td>{$roo.content|mb_substr=0,15}... ...  <u style="cursor:pointer" class="text-primary"onclick=member_show('日志详情','{:url('detail',array('id'=>$roo.id))}','{$roo.id}','650','300')>查看全部</u></td>
+				<td>{$roo.time|date = "Y-m-d H:i:s"}</td>
+				<td class="td-manage">
+
+				<a style="text-decoration:none" onClick="admin_stop(this,'{$roo.id}')" href="javascript:;" title="审批"><i class="Hui-iconfont">待审批</i></a>
+
+				</td>
+			</tr>	
+			{/foreach}
+			{else/}{/if}
+		</tbody>
+	</table>
+	</div>
+</div>
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer"}
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="/static/admin/lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="/static/admin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="/static/admin/lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('.table-sort').dataTable({
+		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+		"bStateSave": true,//状态保存
+		"aoColumnDefs": [
+		  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+		  {"orderable":false,"aTargets":[0,6]}
+		]
+	});
+	
+});
+/*批量-删除*/
+function datadel(){
+  layer.confirm('确认需要一键审批吗?',function(index){
+    arr=[];
+    // 便利出来所有的复选框
+    $(":checkbox").each(function(){
+      //获取选中数据的id
+      if($(this).prop("checked")){
+        id=$(this).val();
+        arr.push(id);
+      }
+    })
+    // alert(arr);
+    var url="{:url('allshenpi')}";
+    $.post(url,{arr:arr},function(data){
+     if(data=="success"){
+        for(var i=0;i<arr.length;i++){
+        //根据id获取input tr 
+        $("input[value='"+arr[i]+"']").parents("tr").remove();
+      }
+      layer.msg('已审批!',{icon:1,time:1000});
+     }
+    })
+  });
+}
+/*管理员-停用*/
+function admin_stop(obj,id){
+	layer.confirm('我已批阅',function(index){
+		var url="{:url('shenpi')}";
+		// alert(id);
+		$.post(url,{id:id},function(data){
+			if(data == "success"){
+				$(obj).parents("tr").remove();
+				layer.msg('已审批!',{icon:1,time:1000});
+			}
+		})
+		//此处请求后台程序，下方是成功后的前台处理……
+		// $(obj).parents("tr").find(".td-manage").prepend('已审批');
+		// $(obj).remove();
+		// layer.msg('已审批!', {icon: 6,time:1000});
+	});
+}
+
+/*日志-查看*/
+function member_show(title,url,id,w,h){
+	layer_show(title,url,w,h);
+}
+/*日志-编辑*/
+function member_edit(title,url,id,w,h){
+	layer_show(title,url,w,h);
+}
+/*密码-修改*/
+function change_password(title,url,id,w,h){
+	layer_show(title,url,w,h);	
+}
+/*日志-删除*/
+function member_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'POST',
+			url: '',
+			dataType: 'json',
+			success: function(data){
+				$(obj).parents("tr").remove();
+				layer.msg('已删除!',{icon:1,time:1000});
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
+</script> 
+</body>
+</html>
