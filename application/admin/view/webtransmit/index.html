@@ -1,0 +1,166 @@
+{include file="public/header"}
+<title>添加</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<body>
+<article class="page-container">
+<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+	<form class="form form-horizontal" id="form-admin-add">
+		<br>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-1">行业选择：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<span class="select-box">
+					<select class="select" size="1" onchange="gradeChanges()" id="b" name="webcate_id">
+						<option value="0">-----------暂未选择---------</option>
+						{foreach name="webcate" item="voo"}
+						<option id="selects" value="{$voo.id}">{:str_repeat('|——',$voo.level)}{$voo['industry']}</option>
+						{/foreach}
+					</select>
+				</span>
+			</div>
+		</div>
+		<br>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-1">文章选择：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<span class="select-box">
+					<select class="select" size="1"  id="a" name="article_id">
+						<option value="0">-----------暂未选择---------</option>
+						
+					</select>
+				</span>
+			</div>
+		</div>
+		<br>
+		<br>
+		<br>
+		<br>
+		<table class="table table-border table-bordered table-hover table-bg table-sort">
+		<p class="btn  radius">转发列表</p>
+		<thead>
+			<tr class="text-c">
+				<th width="25"><input type="checkbox" name="" value=""></th>
+				<th width="40">&nbsp;ID</th>
+				<th width="40">网站名称</th>
+				<th width="40">转发地址</th>
+				<th width="100">账号</th>
+			</tr>
+		</thead>
+		<tbody>
+			{volist name="message" id="vo"}
+			<tr class="text-c">
+				<td><input type="checkbox" value="{$vo.id}" name=""></td>
+				<td>{$vo.id}</td>
+				<td>{$vo.name}</td>
+				<td>{$vo.url}</td>
+				<td>{$vo.username}</td>
+			</tr>
+			{/volist}
+		</tbody>
+	</table>
+	
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-8 col-sm-offset-8">
+				<!-- <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;"> -->
+				<a href="javascript:;" onclick="allput()" class="btn btn-primary radius">&nbsp;&nbsp;一键转发&nbsp;&nbsp;</a>
+			</div>
+		</div>
+	</form>
+	
+	<p class="btn  radius">转发结果</p>
+	
+	<table  class="table table-border table-bordered table-hover table-bg">
+		<tbody id="resList">
+			
+			
+			
+		</tbody>
+	</table>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer"}
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本--> 
+<script type="text/javascript" src="__ADMIN__/admin/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="__ADMIN__/admin/lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="__ADMIN__/admin/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="__ADMIN__/admin/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript">
+
+function gradeChanges(){
+	//var objS = document.getElementById("dutyId");
+	var options=$("#b option:selected");
+	var id = options.val();
+	var url = "{:url('select')}";
+	var option = '';
+	$.post(url,{id:id},function(data){
+		 
+		for(var i = 0;i< data.length; i++){
+			option +='<option value="'+data[i].id+'">'+data[i].title+'</option>';
+		}
+		 $("#a").html(option);
+	})
+}
+
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+});
+function allput(){
+  layer.confirm('确定要发送吗',function(index){
+    arr=[];
+    // 便利出来所有的复选框
+    $(":checkbox").each(function(){
+      //获取选中数据的id
+      if($(this).prop("checked")){
+        id=$(this).val();
+        
+        arr.push(id);
+      }
+    })
+    var article_id = $("#a").val();
+    var webcate_id = $("#b").val();
+
+    if(article_id == 0){
+    	layer.msg('请选择要转发的文章',{icon:5,time:1000});
+    	return false;
+    }
+    if(arr.length <= 0){
+    	layer.msg('请选择要转发的网站',{icon:5,time:1000});
+    	return false;
+    }
+    var url="{:url('add')}";
+    //layer.msg('提交成功!',{icon:1,time:1000});
+    $.post(
+    	url,
+    	{arr:arr,article_id:article_id,webcate_id:webcate_id},
+    	function(data){
+	      	console.log(data);
+	      	// layer.msg('提交成功!',{icon:1,time:1000});
+	      	var html = '';
+		    for (var i = 0;  i < data.length; i++) {
+		    	
+		     	html +=	'<tr class="text-c">'+
+		     			'<td>'+data[i]['name']+'</td>'+
+		     			'<td>'+data[i]['data']+'</td>'+
+		     			'</tr>';
+		     }
+		    //console.log(html);
+		    $("#resList").html(html); 
+			layer.msg('提交成功!',{icon:1,time:1000});
+    	}
+    )
+  });
+}
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
