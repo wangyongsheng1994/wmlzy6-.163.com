@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="css/hui.css" />
+    <link rel="stylesheet" href="fonts/iconfont.css" />
+    <link rel="stylesheet" href="css/css.css" />
+    <title>问题反馈</title>
+    <style type="text/css">
+    	body{ background: #fbfafa;}
+    </style>
+</head>
+<body>
+<div class="nyhead">
+	<div class="left"><a href="javascript:hui.back();"><span class="iconfont">&#xe600;</span></a></div>
+	<h1>问题反馈</h1>
+	<div class="right"><a href="#">提交</a></div>
+</div>
+<div class="xrz">
+	<div class="rzrow"><input type="text" placeholder="请输入姓名："><i class="iconfont">&#xe604;</i></div>
+	<div class="rzrow">
+		<select>
+			<option>请选择所属部门</option>
+			<option>行政部</option>
+			<option>设计部</option>
+			<option>研发部</option>
+			<option>程序部</option>
+		</select>
+		<i class="iconfont">&#xe617;</i></div>
+	<div class="rzrow"><textarea placeholder="请编辑所需内容"></textarea><i class="iconfont">&#xe60e;</i></div>
+</div>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/hui.js"></script>
+<script type="text/javascript">
+function navFloat(){
+	var animationSpeed=1500;
+	var animationEasing='easeOutQuint';
+	var scrollTop=$('.nyhead').offset().top;
+	if($(window).scrollTop()>50){
+	     $('.nyhead').stop().addClass('fixed');
+	    $('.nyhead').stop().animate({'top':0});
+	   
+	} else {
+	    $('.nyhead').stop().removeClass('fixed');
+	    $('.nyhead').stop().animate({'top':'100%'});
+	    
+	}
+}
+	$(window).load(function(){
+	    navFloat();
+	});
+	$(window).scroll(function(){ 
+	    navFloat();
+});
+</script>
+</body>
+</html>

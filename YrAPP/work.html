@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="css/hui.css" />
+    <link rel="stylesheet" href="fonts/iconfont.css" />
+    <link rel="stylesheet" href="css/css.css" />
+    <title>工作台</title>
+</head>
+<body>
+<div class="nyhead">
+	<h1>工作台</h1>
+</div>
+<div class="gztbox">
+	<div class="rzcon mt15">
+		<div class="tit2 clear"><span class="iconfont">&#xe66e;</span>日志</div>
+	    <ul class="clear">
+	    	<li><a href="#" id="xrz">
+	    		<span class="iconfont">&#xe67c;</span>
+	    	    <p>写日志</p></a>
+	    	</li>
+	    	<li><a href="#" id="myrz">
+	    		<span class="iconfont">&#xe724;</span>
+	    	    <p>我的日志</p></a>
+	    	</li>
+	    </ul>
+	</div>
+	<div class="spcon mt15">
+		<div class="tit2 clear"><span class="iconfont">&#xe60a;</span>审批</div>
+		<ul class="clear">
+	    	<li><a href="#" id="rzsp">
+	    		<span class="iconfont">&#xe679;</span>
+	    	    <p>日志审批</p></a>
+	    	</li>
+	    	<li><a href="javascript:qtsp();">
+	    		<span class="iconfont">&#xe75a;</span>
+	    	    <p>其他审批</p></a>
+	    	</li>
+	   </ul> 
+	</div>
+	<div class="qtcon mt15">
+		<div class="tit2 clear"><span class="iconfont">&#xe628;</span>其他</div>
+		<ul class="clear">
+			<p style=" height: 90px; line-height:90px; text-align: center; color: #666; font-size: 16px;">暂无信息</p>
+		</ul>
+	</div>
+	</div>
+</div>
+<div class="blank70"></div>
+<div class="footer">
+	<ul class="clear">
+		<li><a href="index.html">
+			<div class="icon">
+			  <span class="iconfont icon_y">&#xe619;</span>
+			  <span class="iconfont icon_h">&#xe61a;</span>
+			</div>
+			<p>首页</p>
+		</a></li>
+		<li class="active"><a href="work.html">
+			<div class="icon">
+				<span class="iconfont icon_y">&#xe60f;</span>
+				<span class="iconfont icon_h">&#xe630;</span>
+			</div>
+			<p>工作台</p>
+		</a></li>
+		<li><a href="my.html">
+			<div class="icon">
+				<span class="iconfont icon_y">&#xe611;</span>
+				<span class="iconfont icon_h">&#xe612;</span>
+			</div>
+			<p>我的</p>
+		</a></li>
+	</ul>
+</div>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/hui.js"></script>
+<script type="text/javascript" src="js/hu.js"></script>
+<script type="text/javascript">
+	hui.plusReady(function(){
+		var Login = isLogin();
+		if(Login == ''){
+			hui.open('login.html'); 
+			return false;
+		}
+		function navFloat(){
+			var animationSpeed=1500;
+			var animationEasing='easeOutQuint';
+			var scrollTop=$('.nyhead').offset().top;
+			if($(window).scrollTop()>50){
+			     $('.nyhead').stop().addClass('fixed');
+			    $('.nyhead').stop().animate({'top':0});
+			   
+			} else {
+			    $('.nyhead').stop().removeClass('fixed');
+			    $('.nyhead').stop().animate({'top':'100%'});
+			    
+			}
+		}
+		$(window).load(function(){
+		    navFloat();
+		});
+		$(window).scroll(function(){ 
+		    navFloat();
+		});
+		hui("#xrz").click(function(){
+			hui.open('xrz.html');
+		});
+		hui("#myrz").click(function(){
+			hui.open('myrz.html');
+		});
+
+	hui('#rzsp').click(function(){
+		hui.postJSON(
+			URL+"appqd/Login/bumen",  
+	    	{id:Login}, 
+	    	function(res){
+
+	    		if(res.state == 200){
+					hui.open('rzsp.html');
+	    		}else if(res.state == 400){
+	    			hui.toast(res.msg);	
+	    		}else if(res.state == 401){
+	    			hui.toast(res.msg);	
+	    		} 
+	    	}   
+		);
+		
+	});
+		
+
+	function qtsp(){
+		hui.open('rzsp.html');
+	}
+	});
+</script>
+</body>
+</html>

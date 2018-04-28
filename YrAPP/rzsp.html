@@ -1,0 +1,146 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="css/hui.css" />
+    <link rel="stylesheet" href="fonts/iconfont.css" />
+    <link rel="stylesheet" href="css/css.css" />
+    <title>日志审批</title>
+</head>
+<body>
+<div class="spbox"> 
+	<div class="lxhead">
+	  <div class="left"><a href="javascript:hui.back();"><span class="iconfont">&#xe600;</span></a></div>
+	  <h1>日志审批</h1>
+   </div>
+    <div class="spmain">
+      <div class="spnr">
+      	<div class="sprow"><input id="username" type="text" placeholder="请输入操作人"></div>
+      	<div class="sprow"><input id="time" type="date" placeholder="请选择操作时间"></div>
+      	<div class="sprow">
+      		<select id="bumena">
+      			<option>请选择部门日志</option>
+      			<option>待审批</option>
+      			<option>审批历史</option>
+      			
+      		</select>
+      	</div>
+      	<!--<div class="sprow" id="ry">
+      		<select id="ryda">
+      			<option>请选择所属部门</option>
+      		</select>
+      	</div>-->
+      </div>
+      <p class="spbtn"><a href="#" id="kssp">开始审批</a></p>
+    </div>
+</div>
+<script type="text/javascript" src="js/hui.js"></script>
+<script type="text/javascript" src="js/hu.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/hui-select-beautify.js"></script>
+<script type="text/javascript">
+	hui.plusReady(function(){
+		var id = isLogin();
+		var username = plus.storage.getItem('SNICKNAME');
+		var role_id = plus.storage.getItem('ROLE');
+
+		document.getElementById("username").value = username;
+		var time = document.getElementById("time").value;
+		hui('#kssp').click(function(){
+			var time = document.getElementById("time").value;
+
+		});
+		var asd = 1;
+//		hui.postJSON(
+//			URL+"appqd/Login/bumens",  
+//	    	{id:role_id},
+//	    	
+//	    	function(res){
+//	    		if(asd > 1){return false;}
+//	    			
+//
+//	    		if(res.state == 200){
+//	    			var len = res.data;
+//	    			for (var i = 0 ; i < len.length;i++) {
+//	    				var option = document.createElement('option');
+//					    option.innerHTML ='<option data-id="'+len[i].id+'">'+len[i].name+'</option>';
+//	    				hui(option).appendTo('#bumena');  
+//	    			}
+//	    			asd = 2;
+//	    		}else if(res.state == 400){
+//	    			hui.toast(res.msg);	   
+//	    		}else{
+//	    			hui.toast('系统繁忙，请稍候再试');
+//	    		}
+//	    	}    
+//		);
+        hui("#bumena").change(function() {
+        	var sd=	$("#bumena").val(); 
+        	if(sd == "请选择部门日志"){
+        		document.getElementById("kssp").innerHTML='开始审批'; 
+        	}
+			document.getElementById("kssp").innerHTML=sd;
+//			hui.postJSON(
+//				URL+"appqd/Login/bumensa",   
+//		    	{name:sd}, 
+//		    	function(res){  
+//		    		if(res.state == 200){
+//		    			var len = res.data;
+//
+//		    			for (var i = 0 ; i < len.length;i++) {
+//		    				var option = document.createElement('option');
+//						    option.innerHTML ='<option data-id="'+len[i].id+'">'+len[i].username+'</option>';
+//		    				hui(option).appendTo('#ryda');   
+//		    			}
+//		    		}else if(res.state == 400){
+//		    			hui.toast(res.msg);	   
+//		    		}else{
+//		    			hui.toast('系统繁忙，请稍候再试');
+//		    		}
+//		    	}       
+//			); 
+	    });
+
+
+//		hui('#ry').click(function(){
+//
+//			var bm =document.getElementById("bumena").value;
+//
+//			if(bm == '请选择部门日志'){
+//				hui.toast('请先选择部门');
+//				return false;
+//			}
+//			
+//		});
+		hui('#kssp').click(function(){
+         var bumen = document.getElementById("bumena").value;
+//       var reny = document.getElementById("ryda").value;
+         var times = document.getElementById("time").value;
+         hui.open('rzlb.html',{},true,{name:bumen, age:times});   
+//		 	hui.postJSON( 
+//				URL+"appqd/Login/sprz",   
+//		    	{bum:bumen,ry:reny,time:times}, 
+//		    	function(res){ 
+//		    		console.log(JSON.stringify(res))
+		    		
+//		    		if(res.state == 200){
+//		    			var len = res.data;
+//		    			for (var i = 0 ; i < len.length;i++) {
+//		    				var option = document.createElement('option');
+//						    option.innerHTML ='<option data-id="'+len[i].id+'">'+len[i].username+'</option>';
+//		    				hui(option).appendTo('#ryda');   
+//		    			}
+//		    		}else if(res.state == 400){
+//		    			hui.toast(res.msg);	   
+//		    		}else{
+//		    			hui.toast('系统繁忙，请稍候再试');
+//		    		}
+//		    	}      
+//			);  
+
+		})
+	});
+</script>
+</body>  
+</html>

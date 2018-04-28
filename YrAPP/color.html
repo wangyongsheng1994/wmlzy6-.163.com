@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="css/hui.css" />
+    <link rel="stylesheet" href="fonts/iconfont.css" />
+    <link rel="stylesheet" href="css/css.css" />
+    <title>色调设置</title>
+    <style type="text/css">
+    	body{ background: #fbfafa;}
+        .szlist li{ line-height: 36px;}
+        .szlist li:nth-child(1) .left span{ margin-top: 4px; background: #63db52;}
+        .szlist li:nth-child(2) .left span{ margin-top: 4px; background: #c952db;;}
+        .szlist .hui-switch{ float: right;}
+    </style>
+</head>
+<body>
+<div class="nyhead">
+	<div class="left"><a href="javascript:hui.back();"><span class="iconfont">&#xe600;</span></a></div>
+	<h1>色调设置</h1>
+</div>
+<ul class="szlist">
+	<li>
+		<a href="#">
+			<p class="left"><span class="iconfont">&#xe669;</span>绿色色调</p>
+			<div class="hui-switch" id="switchBox"><span>Off</span><div class="hui-switch-in"></div></div>
+		</a>
+	</li>
+	<li>
+		<a href="#">
+			<p class="left"><span class="iconfont">&#xe669;</span>紫色色调</p>
+			<div class="hui-switch" id="switchBox"><span>Off</span><div class="hui-switch-in"></div></div>
+		</a>
+	</li>
+</ul>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/hui.js"></script>
+<script type="text/javascript">
+function navFloat(){
+	var animationSpeed=1500;
+	var animationEasing='easeOutQuint';
+	var scrollTop=$('.nyhead').offset().top;
+	if($(window).scrollTop()>50){
+	     $('.nyhead').stop().addClass('fixed');
+	     $('.nyhead').stop().animate({'top':0});
+	   
+	} else {
+	    $('.nyhead').stop().removeClass('fixed');
+	    $('.nyhead').stop().animate({'top':'100%'});
+	    
+	}
+}
+	$(window).load(function(){
+	    navFloat();
+	});
+	$(window).scroll(function(){ 
+	    navFloat();
+});
+
+
+	hui('#switchBox').switchBox(['Off','On'],function(res){
+	    if(res){
+	        hui.toast('开关打开');
+	    }else{
+	        hui.toast('开关关闭');
+	    }
+	}, true);
+</script>
+</body>
+</html>

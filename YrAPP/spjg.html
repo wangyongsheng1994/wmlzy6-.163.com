@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="css/hui.css" />
+    <link rel="stylesheet" href="fonts/iconfont.css" />
+    <link rel="stylesheet" href="css/css.css" />
+    <title>日志审批</title>
+    <style type="text/css">
+    	body{ background: #fbfafa;}
+    	#hui-header-menu{ width: 100%; height: 80px; line-height:inherit; display: block;}
+    	#hui-header-menu:before{ content: ""!important;}
+    </style>
+</head>
+<body>
+<div class="nyhead">
+	<div class="left"><a href="javascript:hui.back();"><span class="iconfont">&#xe600;</span></a></div>
+	<h1>审批详情</h1>
+</div>
+<div class="rzxq">
+  	<dl>
+  		<dt>姓名：</dt>
+  		<dd>俏青儿</dd>
+  	</dl>
+  	<dl>
+  		<dt>部门：</dt>
+  		<dd>设计部</dd>
+  	</dl>
+  	<dl>
+  		<dt>时间：</dt>
+  		<dd>2018/4/25 &nbsp;&nbsp; 16:00:30</dd>
+  	</dl>
+  	<dl>
+  		<dt>内容：</dt>
+  		<dd>内容描述内容描述内容描述内容描述内容描述内容描述内容描述内容描述内容描述内容描述内容描述内容描述</dd>
+  	</dl>
+  </div>
+  <p class="sptit">审批时间：2018/4/25——2018/4/28</p>
+  <div class="sprz">
+  	<span class="xian"></span>
+  	<div class="sppic">
+  		<div class="spl">
+  			<h3>04/25</h3>
+  			<p>17:30:00</p>
+  		</div>
+  		<div class="spr">
+  			<dl>
+  		     <dt>操作人：</dt>
+  		     <dd>俏青儿</dd>
+  	       </dl>
+  	       <dl>
+  		     <dt>部门：</dt>
+  		     <dd>技术部</dd>
+  	        </dl>
+  	        <dl>
+  		     <dt>审批状态：</dt>
+  		     <dd>已审批</dd>
+  	        </dl>
+  		</div>
+  	</div>
+  	
+  	<div class="sppic">
+  		<div class="spl">
+  			<h3>04/25</h3>
+  			<p>17:30:00</p>
+  		</div>
+  		<div class="spr">
+  			<dl>
+  		     <dt>操作人：</dt>
+  		     <dd>俏青儿</dd>
+  	       </dl>
+  	       <dl>
+  		     <dt>部门：</dt>
+  		     <dd>技术部</dd>
+  	        </dl>
+  	        <dl>
+  		     <dt>审批状态：</dt>
+  		     <dd>已审批</dd>
+  	        </dl>
+  		</div>
+  	</div>
+  	
+  </div>
+<script type="text/javascript" src="js/hui.js"></script>
+<script type="text/javascript">
+	var meuns = ['删除'];
+	var cancel = '取消';
+	hui('#hui-header-menu').click(function(){
+	    hui.actionSheet(meuns, cancel, function(e){
+	        console.log(e.index);
+	        hui.toast(e.innerHTML);
+	    });
+	});
+</script>
+</body>
+</html>

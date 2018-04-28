@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="css/hui.css" />
+    <link rel="stylesheet" href="fonts/iconfont.css" />
+    <link rel="stylesheet" href="css/css.css" />
+    <title>我的</title>
+</head>
+<body>
+<div class="nyhead">
+	<h1>我的</h1>
+	<div class="right"><a href="javascript:sz();"><span class="iconfont">&#xe65b;</span></a></div>
+</div>
+<div class="usercenter">
+	<div class="usertop">
+	  <div class="usertcon">
+		<div class="tximg"><img src="img/tx.jpg" alt="" /></div>
+		<div class="txtxt">
+		 <h3>俏青儿</h3>
+		 <p>设计部</p>
+		</div>
+	  </div>
+	</div>
+	<ul class="usernav">
+		<li><a href="javascript:grzl();"><p class="left"><span class="iconfont">&#xe604;</span>个人资料</p><i class="iconfont">&#xe639;</i></a></li>
+		<li><a href="javascript:mylxr();"><p class="left"><span class="iconfont">&#xe60d;</span>我的联系人</p><i class="iconfont">&#xe639;</i></a></li>
+	</ul>
+</div>
+<div class="blank70"></div>
+<div class="footer">
+	<ul class="clear">
+		<li><a href="index.html">
+			<div class="icon">
+			  <span class="iconfont icon_y">&#xe619;</span>
+			  <span class="iconfont icon_h">&#xe61a;</span>
+			</div>
+			<p>首页</p>
+		</a></li>
+		<li><a href="work.html">
+			<div class="icon">
+				<span class="iconfont icon_y">&#xe60f;</span>
+				<span class="iconfont icon_h">&#xe630;</span>
+			</div>
+			<p>工作台</p>
+		</a></li>
+		<li class="active"><a href="my.html">
+			<div class="icon">
+				<span class="iconfont icon_y">&#xe611;</span>
+				<span class="iconfont icon_h">&#xe612;</span>
+			</div>
+			<p>我的</p>
+		</a></li>
+	</ul>
+</div>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/hui.js"></script>
+<script type="text/javascript">
+function navFloat(){
+	var animationSpeed=1500;
+	var animationEasing='easeOutQuint';
+	var scrollTop=$('.nyhead').offset().top;
+	if($(window).scrollTop()>50){
+	     $('.nyhead').stop().addClass('fixed');
+	    $('.nyhead').stop().animate({'top':0});
+	   
+	} else {
+	    $('.nyhead').stop().removeClass('fixed');
+	    $('.nyhead').stop().animate({'top':'100%'});
+	    
+	}
+}
+	$(window).load(function(){
+	    navFloat();
+	});
+	$(window).scroll(function(){ 
+	    navFloat();
+});
+function grzl(){
+	hui.open('grzl.html');
+}
+function mylxr(){
+	hui.open('mylxr.html');
+}
+function sz(){
+	hui.open('sz.html');
+}
+</script>
+</body>
+</html>

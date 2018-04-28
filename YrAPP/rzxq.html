@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="css/hui.css" />
+    <link rel="stylesheet" href="fonts/iconfont.css" />
+    <link rel="stylesheet" href="css/css.css" />
+    <title>我的</title>
+    <style type="text/css">
+    	body{ background: #fbfafa;}
+    	#hui-header-menu{ width: 100%; height: 80px; line-height:inherit; display: block;}
+    	#hui-header-menu:before{ content: ""!important;}
+    </style>
+</head>
+<body>
+<div class="lxrxq"> 
+  <div class="lxt">
+  	<div class="lxtbg"></div>
+  	<div class="lxhead">
+	  <div class="left"><a href="javascript:hui.back();"><span class="iconfont">&#xe600;</span></a></div>
+	  <h1>日志详情</h1>
+	  <div class="right"><a href="#" id="hui-header-menu"><span class="iconfont">&#xe67a;</span></a></div>
+    </div>
+  	<div class="lxtx"><img src="img/tx.jpg" alt="" /></div>
+  </div>
+  <div class="rzxq">
+  	<dl>
+  		<dt>姓名：</dt>
+  		<dd id="name"></dd>
+  	</dl>
+  	<dl>
+  		<dt>部门：</dt>
+  		<dd id="bumen"></dd>
+  	</dl>
+  	<dl>
+  		<dt>时间：</dt>
+  		<dd id="time"></dd>
+  	</dl>
+  	<dl>
+  		<dt>内容：</dt>
+  		<dd id="content"></dd>
+  	</dl>
+  </div>
+</div>
+<script type="text/javascript" src="js/hui.js"></script>
+<script type="text/javascript" src="js/hu.js"></script> 
+<script type="text/javascript">
+	hui.plusReady(function(){
+		var _self = plus.webview.currentWebview();
+		console.log(JSON.stringify(_self.pid))
+	 	hui.postJSON( 
+			URL+"appqd/Login/logdetails",    
+	    	{id:_self.pid},  
+	    	function(res){ 
+	    		console.log(JSON.stringify(res))
+	    		if(res.state == 200){
+	    			var len = res.data;
+	    			document.getElementById("name").innerHTML=len.name;
+	    			document.getElementById("bumen").innerHTML=len.title;
+	    			document.getElementById("time").innerHTML=len.time;
+	    			document.getElementById("content").innerHTML=len.content;
+
+	    		}else if(res.state == 400){
+	    			hui.toast(res.msg);	   
+	    		}else{
+	    			hui.toast('网络繁忙，请稍候再试');
+	    		}
+	    	}      
+		);
+	});
+	var meuns = ['删除'];
+	var cancel = '取消';
+	hui('#hui-header-menu').click(function(){
+	    hui.actionSheet(meuns, cancel, function(e){
+	        console.log(e.index);
+	        hui.toast(e.innerHTML);
+	    });
+	});
+</script>
+</body>
+</html>

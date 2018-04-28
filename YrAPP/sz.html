@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="css/hui.css" />
+    <link rel="stylesheet" href="fonts/iconfont.css" />
+    <link rel="stylesheet" href="css/css.css" />
+    <title>设置</title>
+    <style type="text/css">
+    	body{ background: #fbfafa;}
+    </style>
+</head>
+<body>
+<div class="nyhead">
+	<div class="left"><a href="javascript:hui.back();"><span class="iconfont">&#xe600;</span></a></div>
+	<h1>设置</h1>
+</div>
+<ul class="szlist">
+	<li>
+		<a href="javascript:xgmm();">
+			<p class="left"><span class="iconfont">&#xe627;</span>密码修改</p>
+			<i class="iconfont">&#xe639;</i>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:color();">
+			<p class="left"><span class="iconfont">&#xe669;</span>色调设置</p>
+			<i class="iconfont">&#xe639;</i>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:wtfk();">
+			<p class="left"><span class="iconfont">&#xe63c;</span>问题反馈</p>
+			<i class="iconfont">&#xe639;</i>
+		</a>
+	</li>
+	<li>
+		<a href="#">
+			<p class="left"><span class="iconfont">&#xe64d;</span>检测更新</p>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:out();">
+			<p class="left"><span class="iconfont">&#xe6b2;</span>退出登录</p>
+		</a>
+	</li>
+</ul>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/hui.js"></script>
+<script type="text/javascript">
+function navFloat(){
+	var animationSpeed=1500;
+	var animationEasing='easeOutQuint';
+	var scrollTop=$('.nyhead').offset().top;
+	if($(window).scrollTop()>50){
+	     $('.nyhead').stop().addClass('fixed');
+	    $('.nyhead').stop().animate({'top':0});
+	   
+	} else {
+	    $('.nyhead').stop().removeClass('fixed');
+	    $('.nyhead').stop().animate({'top':'100%'});
+	    
+	}
+}
+	$(window).load(function(){
+	    navFloat();
+	});
+	$(window).scroll(function(){ 
+	    navFloat();
+});
+function xgmm(){
+	hui.open('xgmm.html');
+}
+function color(){
+	hui.open('color.html');
+}
+function wtfk(){
+	hui.open('wtfk.html');
+}
+function out(){
+	console.log('asda')
+	plus.storage.setItem('SUID','');
+}
+</script> 
+</body>
+</html>

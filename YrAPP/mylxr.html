@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="css/hui.css" />
+    <link rel="stylesheet" href="fonts/iconfont.css" />
+    <link rel="stylesheet" href="css/css.css" />
+    <title>联系人</title>
+</head>
+<body>
+<div class="nyhead">
+	<div class="left"><a href="javascript:hui.back();"><span class="iconfont">&#xe600;</span></a></div>
+	<h1>我的联系人</h1>
+</div>
+<div class="lxrsea">
+  <div class="searchbox">
+	<p><input type="text" placeholder="请输入要搜索的关键字..."><span class="iconfont">&#xe613;</span></p>
+	<input type="button" value="搜索">
+  </div>
+</div>
+<ul class="lxrbox">
+ <li><a href="javascript:lxrxq();">
+  <div class="left"><img src="img/tx.jpg" alt="" /></div>
+  <div class="right">
+  	<h3>俏青儿</h3>
+  	<p>15936347815</p>
+  </div>
+  <i class="iconfont">&#xe639;</i>
+ </a>
+ </li>
+ <li><a href="#">
+  <div class="left"><img src="img/tx.jpg" alt="" /></div>
+  <div class="right">
+  	<h3>俏青儿</h3>
+  	<p>15936347815</p>
+  </div>
+  <i class="iconfont">&#xe639;</i>
+ </a>
+ </li>
+ <li><a href="#">
+  <div class="left"><img src="img/tx.jpg" alt="" /></div>
+  <div class="right">
+  	<h3>俏青儿</h3>
+  	<p>15936347815</p>
+  </div>
+  <i class="iconfont">&#xe639;</i>
+ </a>
+ </li>
+ <li><a href="#">
+  <div class="left"><img src="img/tx.jpg" alt="" /></div>
+  <div class="right">
+  	<h3>俏青儿</h3>
+  	<p>15936347815</p>
+  </div>
+  <i class="iconfont">&#xe639;</i>
+ </a>
+ </li>
+ <li><a href="#">
+  <div class="left"><img src="img/tx.jpg" alt="" /></div>
+  <div class="right">
+  	<h3>俏青儿</h3>
+  	<p>15936347815</p>
+  </div>
+  <i class="iconfont">&#xe639;</i>
+ </a>
+ </li>
+ <li><a href="#">
+  <div class="left"><img src="img/tx.jpg" alt="" /></div>
+  <div class="right">
+  	<h3>俏青儿</h3>
+  	<p>15936347815</p>
+  </div>
+  <i class="iconfont">&#xe639;</i>
+ </a>
+ </li>
+</ul>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/hui.js"></script>
+<script type="text/javascript">
+function navFloat(){
+	var animationSpeed=1500;
+	var animationEasing='easeOutQuint';
+	var scrollTop=$('.nyhead').offset().top;
+	if($(window).scrollTop()>50){
+	     $('.nyhead').stop().addClass('fixed');
+	    $('.nyhead').stop().animate({'top':0});
+	   
+	} else {
+	    $('.nyhead').stop().removeClass('fixed');
+	    $('.nyhead').stop().animate({'top':'100%'});
+	    
+	}
+}
+	$(window).load(function(){
+	    navFloat();
+	});
+	$(window).scroll(function(){ 
+	    navFloat();
+});
+function lxrxq(){
+	hui.open('lxrxq.html');
+}
+</script>
+</body>
+</html>

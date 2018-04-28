@@ -1,0 +1,66 @@
+{
+	"index.html": {
+		"refer": [
+			"my.html",
+			"work.html",
+			"xwlist.html",
+			"xwxq.html",
+			"login.html"
+		],
+		"resources": [
+			"work.html"
+		]
+	},
+	"my.html": {
+		"refer": [
+			"mylxr.html",
+			"work.html",
+			"grzl.html",
+			"index.html",
+			"sz.html"
+		]
+	},
+	"work.html": {
+		"refer": [
+			"my.html",
+			"index.html",
+			"xrz.html",
+			"rzsp.html",
+			"myrz.html",
+			"login.html"
+		]
+	},
+	"sz.html": {
+		"refer": [
+			"color.html",
+			"xgmm.html",
+			"wtfk.html"
+		]
+	},
+	"mylxr.html": {
+		"refer": [
+			"lxrxq.html"
+		]
+	},
+	"login.html": {
+		"refer": [
+			"xgmm.html",
+			"index.html"
+		]
+	},
+	"myrz.html": {
+		"refer": [
+			"rzxq.html"
+		]
+	},
+	"rzsp.html": {
+		"refer": [
+			"rzlb.html"
+		]
+	},
+	"rzlb.html": {
+		"refer": [
+			"rzxq.html"
+		]
+	}
+}

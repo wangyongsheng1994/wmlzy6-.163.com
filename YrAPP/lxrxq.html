@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="css/hui.css" />
+    <link rel="stylesheet" href="fonts/iconfont.css" />
+    <link rel="stylesheet" href="css/css.css" />
+    <title>我的</title>
+    <style type="text/css">
+    	body{ background: #fbfafa;}
+    </style>
+</head>
+<body>
+<div class="lxrxq"> 
+  <div class="lxt">
+  	<div class="lxtbg"></div>
+  	<div class="lxhead">
+	  <div class="left"><a href="javascript:hui.back();"><span class="iconfont">&#xe600;</span></a></div>
+	  <h1>联系人</h1>
+    </div>
+  	<div class="lxtx"><img src="img/tx.jpg" alt="" /></div>
+  </div>
+  <ul class="lxb">
+  	<li>所属部门：<span>设计部</span></li>
+  	<li>联系电话：<span id="tell">15936347815</span></li>
+  	<li><a href="javascript:phone();"><span class="iconfont">&#xe63b;</span><i>拨打电话</i></a></li>
+  </ul>
+</div>
+<script type="text/javascript" src="js/hui.js"></script>
+<script type="text/javascript">
+	hui.plusReady(function(){}); 
+	function phone(){  //拨打电话
+		hui.confirm('您确认要拨打该电话', ['取消','确定'], function(){
+        plus.device.dial( document.getElementById("tell").innerHTML, false );
+    },function(){
+        return false;
+    });
+		
+	}
+	
+	
+</script>
+</body>
+</html>
