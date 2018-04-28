@@ -1,8 +1,6 @@
 <?php 
-namespace app\common\model;
-use think\facade\Session;
+namespace app\appqd\model;
 use think\Model;
-
 class User extends Model
 {
 	// 设置返回数据集的对象名

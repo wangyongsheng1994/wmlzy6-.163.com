@@ -34,7 +34,7 @@ return [
         
         '__TITLE__'=>'野人后台管理系统',
         '__LOGIN__'=>'/static/admin/login',
-        '__ADMIN__'=>'/static',
+        '__ADMIN__'=>'/static'
     ]
 
 ];
