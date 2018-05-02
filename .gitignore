@@ -1,9 +1,0 @@
-/.idea
-/.vscode
-/vendor
-*.log
-thinkphp
-.env
-
-#config
-config/
