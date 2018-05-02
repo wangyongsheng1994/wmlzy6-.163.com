@@ -1,0 +1,248 @@
+{include file="public/header"}
+<title>添加信息</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-admin-add">
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>收到日期：</label>
+		<div class="formControls col-xs-8 col-sm-5">
+			<input type="date" class="input-text" placeholder=""  value="{$data.receive_time}" id="receive_time" name="receive_time">
+		</div>
+		
+	</div> 
+	<div class="row cl">	
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>启用日期：</label>
+		<div class="formControls col-xs-6 col-sm-5">
+			<input type="date" class="input-text" placeholder=""  value="{$data.use_time}" id="use_time" name="use_time">
+		</div>
+	</div>
+	<!-- <div class="row cl">	
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>用印人：</label>
+		<div class="formControls col-xs-6 col-sm-5">
+			<input type="text" class="input-text" placeholder=""  value="{$use_name}" id="seal_use_name" name="seal_use_name">
+		</div>
+	</div> -->
+
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>用印人：</label>
+		<div class="formControls col-xs-5 col-sm-5">
+				<span class="select-box">
+					<select class="select" size="1" name="seal_use_name">
+						<option value="0">---请选择---</option>
+						{foreach name="user" item="voo"}
+						<option {if condition="$voo.id eq $use_name"}selected{else/}{/if} value="{$voo.id}">---{$voo.username}---</option>
+						{/foreach}
+					</select>
+				</span>
+		</div>
+	</div>
+	<!-- <div class="row cl">	
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>批准人：</label>
+		<div class="formControls col-xs-6 col-sm-5">
+			<input type="text" class="input-text" placeholder=""  value="{$roval_name}" id="seal_roval_name" name="seal_roval_name">
+		</div>
+	</div> -->
+	
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>批准人：</label>
+		<div class="formControls col-xs-5 col-sm-5">
+				<span class="select-box">
+					<select class="select" size="1" name="seal_roval_name">
+						<option value="0">---请选择---</option>
+						{foreach name="user" item="voo"}
+						<option {if condition="$voo.id eq $roval_name"}selected{else/}{/if} value="{$voo.id}">---{$voo.username}---</option>
+						{/foreach}
+					</select>
+				</span>
+		</div>
+	</div>
+	
+	<!-- <div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>用印部门：</label>
+		<div class="formControls col-xs-8 col-sm-5">
+			<input type="text" class="input-text" placeholder=""  value="{$role_name}" id="" name="" value="">
+		</div>
+	</div> -->
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>用章部门：</label>
+		<div class="formControls col-xs-5 col-sm-5">
+				<span class="select-box">
+					<select class="select" size="1" name="role_id">
+						<option value="0">---请选择---</option>
+						{foreach name="roles" item="vo"}
+						<option {if condition="$vo.id eq $role_name"}selected{else/}{/if} value="{$vo.id}">---{:str_repeat('|——',$vo.level)}{$vo.name}---</option>
+						{/foreach}
+					</select>
+				</span>
+		</div>
+	</div>
+
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>印章类型：</label>
+		<div class="formControls col-xs-5 col-sm-5">
+				<span class="select-box">
+					<select class="select" size="1" name="seal_type">
+						<option value="0">---请选择---</option>
+						<option {if condition="$data.seal_type eq '公章' "}selected{else/}{/if} value="公章">---公章---</option>
+						<option {if condition="$data.seal_type eq '法人章' "}selected{else/}{/if} value="法人章">---法人章---</option>
+						<option {if condition="$data.seal_type eq '财务章' "}selected{else/}{/if} value="财务章">---财务章---</option>
+						<option {if condition="$data.seal_type eq '合同章' "}selected{else/}{/if} value="合同章">---合同章---</option>
+						<option {if condition="$data.seal_type eq '其他' "}selected{else/}{/if} value="其他">---其他---</option>
+					</select>
+				</span>
+		</div>
+	</div>
+
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>申请理由：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" autocomplete="off"  value="{$data.result}" placeholder="申请理由" id="result" name="result">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>使用范围：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text"  value="{$data.scope}" placeholder="" id="scope" name="scope">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>印章名称：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" placeholder=""  value="{$data.seal_name}" name="seal_name" id="seal_name">
+		</div>
+	</div>
+	<!-- <div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>枚数：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" placeholder=""  value="{$data.seal_num}">
+		</div>
+	</div> -->
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>枚数：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="number" min="1" max="100" class="input-text" placeholder="" name="seal_num" value="{$data.seal_num}">
+		</div>
+	</div>
+	<!-- <div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>份数：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" placeholder=""  value="{$data.number}">
+		</div>
+	</div> -->
+	
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>份数：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="number" min="1" max="100" class="input-text" placeholder="" name="number" value="{$data.number}">
+		</div>
+	</div>
+
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>盖章内容概要：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" placeholder=""  value="{$data.seal_descr}" name="seal_descr" id="seal_descr">
+		</div>
+	</div>
+	
+
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>备注：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" placeholder=""  value="{$data.beizhu}" name="beizhu" id="beizhu">
+		</div>
+	</div>
+	<input type="hidden" name="id" value="{$data['id']}">
+
+	<div class="row cl">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+		</div>
+	</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去--> 
+{include file="public/footer"}
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__ADMIN__/admin/lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="__ADMIN__/admin/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="__ADMIN__/admin/lib/jquery.validation/1.14.0/messages_zh.js"></script> 
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-admin-add").validate({
+		rules:{
+			receive_time:{
+				required:true,
+			},
+			use_time:{
+				required:true,
+			},
+			role_id:{
+				required:true,
+			},
+			result:{
+				required:true,	
+			},
+			scope:{
+				required:true,
+			},
+			seal_name:{
+				required:true,
+			},
+			seal_num:{
+				required:true,
+			},
+			seal_descr:{
+				required:true,
+			},
+			number:{
+				required:true,
+			},
+			seal_type:{
+				required:true,
+			},
+			seal_use_name:{
+				required:true,
+			},
+			seal_roval_name:{
+				required:true,
+			}
+			
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+            $(form).ajaxSubmit({
+                type: 'post',
+                url: "{:url('update')}" ,
+                success: function(data){
+		                layer.msg(data,{icon:1,time:1500},function(){
+		                    parent.window.location.href="{:url('index')}";
+		                    var index=parent.layer.getFrameIndex(window.name);
+		                    parent.layer.close(index);
+		                });	
+                	// alert(data);
+                },
+                error: function(XmlHttpRequest, textStatus, errorThrown){
+                    layer.msg('很遗憾!添加失败',{icon:1,time:1000});
+                }
+            });
+        }
+	});
+});
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
