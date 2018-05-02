@@ -1,0 +1,123 @@
+{include file="public/header"}
+<title>添加</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<body>
+<article class="page-container">
+<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+	<form class="form form-horizontal" id="form-admin-add">
+		<br>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">文章选择：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+					<select class="select" size="1" name="article_id">
+						<option value="0">-----------暂未选择---------</option>
+						{foreach name="article" item="vo"}
+						<option value="{$vo.id}">{$vo['title']}</option>
+						{/foreach}
+					</select>
+				</span>
+			</div>
+		</div>
+		<br>
+	
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">行业选择：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+					<select class="select" size="1" name="webcate_id">
+						<option value="0">-----------暂未选择---------</option>
+						{foreach name="webcate" item="voo"}
+						<option value="{$voo.id}">{:str_repeat('|——',$voo.level)}{$voo['industry']}</option>
+						{/foreach}
+					</select>
+				</span>
+			</div>
+		</div>
+		<br>
+		<br>
+		<br>
+		<table class="table table-border table-bordered table-hover table-bg table-sort">
+		<thead>
+			<tr class="text-c">
+				<th width="25"><input type="checkbox" name="" value=""></th>
+				<th width="40">ID</th>
+				<th width="40">网站名称</th>
+				<th width="100">账号</th>
+			</tr>
+		</thead>
+		<tbody>
+			{volist name="message" id="vo"}
+			<tr class="text-c">
+				<td><input type="checkbox" value="{$vo.id}" name=""></td>
+				<td>{$vo.id}</td>
+				<td>{$vo.name}</td>
+				<td>{$vo.username}</td>
+			</tr>
+			{/volist}
+		</tbody>
+	</table>
+	
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer"}
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本--> 
+<script type="text/javascript" src="/static/admin/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/admin/lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="/static/admin/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="/static/admin/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-admin-add").validate({
+		rules:{
+			name:{
+				required:true,
+			},
+			industry:{
+				required:true,
+			}
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+            $(form).ajaxSubmit({
+                type: 'post',
+                url: "{:url('add')}" ,
+                success: function(data){
+	                // alert(data);
+	                layer.msg(data,{icon:1,time:1500},function(){
+	                    parent.window.location.href="{:url('index')}";
+	                    var index=parent.layer.getFrameIndex(window.name);
+	                    parent.layer.close(index);
+	                });
+                },
+                error: function(XmlHttpRequest, textStatus, errorThrown){
+                    layer.msg('很遗憾!添加失败',{icon:1,time:1000});
+                }
+            });
+        }
+	});
+});
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
