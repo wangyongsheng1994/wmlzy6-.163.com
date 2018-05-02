@@ -1,14 +1,14 @@
 {include file="public/header"}
 <link href="__ADMIN__/admin/lib/lightbox2/2.8.1/css/lightbox.css" rel="stylesheet" type="text/css" >
-<title>网站类别列表</title>
+<title>项目列表</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 网站类别中心 <span class="c-gray en">&gt;</span> 网站类别管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 项目中心 <span class="c-gray en">&gt;</span> 项目管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
 			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-			<a href="javascript:;" onclick=member_add('添加类别','{:url('add')}','1100','800') class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加类别</a>
+			<a href="javascript:;" onclick=member_add('添加项目','{:url('add')}','1100','800') class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加项目</a>
 		</span>
 		<span class="r">共有数据：<strong>{$count}</strong> 条</span>
 	</div>
@@ -74,11 +74,11 @@ $(function(){
 	});
 	
 });
-/*网站类别-添加*/
+/*项目-添加*/
 function member_add(title,url,w,h){
 	layer_show(title,url,w,h);
 }
-/*网站类别-历史*/
+/*项目-历史*/
 function member_send(title,url){
 	var index = layer.open({
 		type: 2,
@@ -87,11 +87,11 @@ function member_send(title,url){
 	});
 	layer.full(index);
 }
-/*网站类别-查看*/
+/*项目-查看*/
 function member_show(title,url,id,w,h){
 	layer_show(title,url,w,h);
 }
-/*网站类别-编辑*/
+/*项目-编辑*/
 function member_edit(title,url,id,w,h){
 	layer_show(title,url,w,h);
 }
@@ -99,7 +99,7 @@ function member_edit(title,url,id,w,h){
 function change_password(title,url,id,w,h){
 	layer_show(title,url,w,h);	
 }
-/*网站类别-删除*/
+/*项目-删除*/
 function member_del(obj,id){
 	layer.confirm('确认要删除吗？',function(index){
 		var url = "{:url('delete')}";

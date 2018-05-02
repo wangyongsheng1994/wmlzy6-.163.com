@@ -4,21 +4,28 @@ use think\Controller;
 use think\facade\Session;
 class Webtransmit extends Controller
 {
-  public function select(){
-    $id = request()->param("id");
-    // return $id;die;
-    $article = db("article")->where("webcate_id",$id)->select();
-    return $article;
-  }
   public function index(){
-    $article = db("article")->select();
+    // $article = db("article")->select();
     $webcate = getList(db("webcate")->select());
     $message = db("message")->select();
     // $id = request()->param("id");
     // return $id
     // // dump($message);
     // die;
-    return view("index",['article'=>$article,'webcate'=>$webcate,'message'=>$message]);
+    return view("index",['webcate'=>$webcate,'message'=>$message]);
+  }
+   public function select(){
+    $id = request()->param("id");
+    // return $id;die;
+    $article = db("article")->where("webcate_id",$id)->select();
+    return $article;
+  }
+  public function selects(){
+    $id = request()->param("id");
+    // return $id;
+    $messages = db("message")->where("industrys",$id)->select();
+    // dump($messages);
+    return $messages;
   }
   /* ************************************************************************************** */
   //使用curl 发送get/post请求 第二个参数有值是是post请求
@@ -52,7 +59,10 @@ class Webtransmit extends Controller
       // 行业 网站类别id
       $webcate_id = $_POST['webcate_id'];
       $arr = isset($_POST['arr'])?$_POST['arr']:"";
-      // return $arr.":".$article.":".$arr;
+      // return $arr.":".$article_id.":".$webcate_id;
+      // return $webcate_id;
+      // die;
+      // return $arr;
       /*查询出来文章*/
       $articles = db("article")->where("id",$article_id)->find();
       /*查询出来所所属行业*/

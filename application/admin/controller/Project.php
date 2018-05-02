@@ -15,6 +15,7 @@ class Project extends Controller
 	}
 	public function add(){
 		return view("add");
+		
 	}
 }
 ?>

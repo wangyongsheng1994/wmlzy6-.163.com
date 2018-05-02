@@ -27,7 +27,7 @@
 			<label class="form-label col-xs-4 col-sm-1">文章选择：</label>
 			<div class="formControls col-xs-8 col-sm-3">
 				<span class="select-box">
-					<select class="select" size="1"  id="a" name="article_id">
+					<select class="select" size="1" onchange="gradeChangess()" id="a" name="article_id">
 						<option value="0">-----------暂未选择---------</option>
 						
 					</select>
@@ -49,8 +49,8 @@
 				<th width="100">账号</th>
 			</tr>
 		</thead>
-		<tbody>
-			{volist name="message" id="vo"}
+		<tbody id="resLists">
+			<!-- {volist name="message" id="vo"}
 			<tr class="text-c">
 				<td><input type="checkbox" value="{$vo.id}" name=""></td>
 				<td>{$vo.id}</td>
@@ -58,7 +58,7 @@
 				<td>{$vo.url}</td>
 				<td>{$vo.username}</td>
 			</tr>
-			{/volist}
+			{/volist} -->
 		</tbody>
 	</table>
 	
@@ -106,6 +106,31 @@ function gradeChanges(){
 		 $("#a").html(option);
 	})
 }
+
+function gradeChangess(){
+	var options=$("#b option:selected");
+	var id = options.val();
+	var url = "{:url('selects')}";
+	var option = '';
+	$.post(url,{id:id},function(data){
+		console.log(data);
+		var html = '';
+		for(var i = 0; i < data.length; i++){
+			html += '<tr class="text-c">'+
+						'<td><input type="checkbox" value='+data[i]['id']+' name=""></td>'+
+		     			'<td>'+data[i]['id']+'</td>'+
+		     			'<td>'+data[i]['name']+'</td>'+
+		     			'<td>'+data[i]['url']+'</td>'+
+						'<td>'+data[i]['username']+'</td>'+
+		     			'</tr>';
+		}
+		$("#resLists").html(html);
+	})
+
+
+}
+
+
 
 $(function(){
 	$('.skin-minimal input').iCheck({
