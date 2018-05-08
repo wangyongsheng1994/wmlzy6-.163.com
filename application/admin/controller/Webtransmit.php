@@ -5,27 +5,24 @@ use think\facade\Session;
 class Webtransmit extends Controller
 {
   public function index(){
-    // $article = db("article")->select();
     $webcate = getList(db("webcate")->select());
-    $message = db("message")->select();
-    // $id = request()->param("id");
-    // return $id
-    // // dump($message);
-    // die;
-    return view("index",['webcate'=>$webcate,'message'=>$message]);
+    if(request()->post()){
+      $id = request()->param("id");
+      $article = model("article")->where("webcate_id",$id)->select();
+      return $article;
+    }
+    // dump($webcate);
+   $this->assign([
+      'webcate'=>$webcate, /*文章类别*/
+    ]);
+    return view("index");
   }
-   public function select(){
+  public function indexs(){
     $id = request()->param("id");
-    // return $id;die;
-    $article = db("article")->where("webcate_id",$id)->select();
-    return $article;
-  }
-  public function selects(){
-    $id = request()->param("id");
-    // return $id;
-    $messages = db("message")->where("industrys",$id)->select();
-    // dump($messages);
-    return $messages;
+    $article = db("article")->where("id",$id)->find();
+    $webcate = db("webcate")->where("id",$article['webcate_id'])->find();
+    $message  = db("message")->where("industrys",$webcate['id'])->select();
+    return $message;
   }
   /* ************************************************************************************** */
   //使用curl 发送get/post请求 第二个参数有值是是post请求
@@ -59,10 +56,7 @@ class Webtransmit extends Controller
       // 行业 网站类别id
       $webcate_id = $_POST['webcate_id'];
       $arr = isset($_POST['arr'])?$_POST['arr']:"";
-      // return $arr.":".$article_id.":".$webcate_id;
-      // return $webcate_id;
-      // die;
-      // return $arr;
+      // return $arr.":".$article.":".$arr;
       /*查询出来文章*/
       $articles = db("article")->where("id",$article_id)->find();
       /*查询出来所所属行业*/
@@ -74,29 +68,28 @@ class Webtransmit extends Controller
       $brr = [];
       //查询要发送的地址
       $message = db("message")->where("id","in",$arr)->select();
-      // dump($message);exit;
-      //循环
-      foreach($message as $k=>$v){
-        //提交
-        $res = $this->curl($message[$k]['url'],$articles);
-        // dump($res);
-        //将数组转换成json
-        $res = json_decode($res,true);
-        //判断状态
-        $res_arr = [
-          'name' => $message[$k]['name'],
-          'data' => $res['data']
-        ];
-        if($res['state'] == '200'){
-          array_push($brr,$res_arr);
-        }else if($res['state'] == '101'){
-          array_push($brr,$res_arr);
-        }else{
-          array_push($brr,array('name' => $message[$k]['name'],'data' => '异常'));
-        }
+      dump($message);
+      // // 循环
+      // foreach($message as $k=>$v){
+      //   //提交
+      //   $res = $this->curl($message[$k]['url'],$articles);
+      //   //反json
+      //   $res = json_decode($res,true);
+      //   //判断状态
+      //   $res_arr = [
+      //     'name' => $message[$k]['name'],
+      //     'data' => $res['data']
+      //   ];
+      //   if($res['state'] == '200'){
+      //     array_push($brr,$res_arr);
+      //   }else if($res['state'] == '101'){
+      //     array_push($brr,$res_arr);
+      //   }else{
+      //     array_push($brr,array('name' => $message[$k]['name'],'data' => '异常'));
+      //   }
 
-      }
-      return $brr;
+      // }
+      // return $brr;
     }
 
 }

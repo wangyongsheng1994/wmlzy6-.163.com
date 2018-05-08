@@ -10,10 +10,13 @@ class Login extends Controller
 	public function dologin(){
 		$request = request();
 		$username = $_POST['username'];
-		$password = $_POST['password'];
+		$password = md5($_POST['password']);
 		$code = $_POST['code'];
 		$data=db("user")->where('username',$username)->where('password',$password)->find();
+		// dump($data);
+		// die;
 		$id = $data['id'];
+		// echo $username.":".$password.":".$code;
 		if(!captcha_check($code)){
 			$this->error("验证码输入错误!",'admin/login/index');
 		}

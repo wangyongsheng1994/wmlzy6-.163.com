@@ -46,5 +46,6 @@ class User extends Model
     public function Seal(){
         return $this->hasmany('seal','seal_use_name','id');
     }
+
 }
 ?>

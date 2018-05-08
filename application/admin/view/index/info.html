@@ -15,7 +15,12 @@
 				<input type="text" class="input-text" value="{$data.username}" placeholder="" id="" name="username">
 			</div>
 		</div>
-            <input type="hidden" name="oldpassword" value="{$data.password}">
+         <div class="row cl">
+            <label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>旧密码：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="oldpassword" name="oldpassword">
+            </div>
+        </div>
         <div class="row cl">
             <label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>新密码：</label>
             <div class="formControls col-xs-8 col-sm-9">
@@ -74,17 +79,18 @@
 <script type="text/javascript" src="__ADMIN__/admin/lib/webuploader/0.1.5/webuploader.min.js"></script> 
 <script type="text/javascript">
 // var old = $("#oldpassword").val();
-$("#oldpassword").blur(function(){
-    var old = $(this).val();
-    var id = $(".ids").val();
-    var url = "{:url('info')}";
-    $.post(url,{old:old},function(data){
-        if(data == 404){
-            alert("旧密码输入错误");
-            return false;
-        }
-    })
-})
+// $("#oldpassword").blur(function(){
+//     var old = $(this).val();
+//     var id = $(".ids").val();
+//     alert(id);
+    // var url = "{:url('info')}";
+    // $.post(url,{old:old},function(data){
+    //     if(data == 404){
+    //         alert("旧密码输入错误");
+    //         return false;
+    //     }
+    // })
+// })
 $(function(){
     $('.skin-minimal input').iCheck({
         checkboxClass: 'icheckbox-blue',
@@ -121,13 +127,15 @@ $(function(){
                 type: 'post',
                 url: "{:url('info')}" ,
                 success: function(data){
-                // console.log(data);
-                // alert(data);
-                    layer.msg(data,{icon:1,time:1500},function(){
-                        parent.window.location.href="{:url('index')}";
-                        var index=parent.layer.getFrameIndex(window.name);
-                        parent.layer.close(index);
-                    });
+                    if(data == "旧密码输入错误"){
+                       layer.msg('旧密码输入错误',{icon:1,time:1500}); 
+                    }else{
+                        layer.msg(data,{icon:1,time:1500},function(){
+                            parent.window.location.href="{:url('index')}";
+                            var index=parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                    }
                 },
                 error: function(XmlHttpRequest, textStatus, errorThrown){
                     layer.msg('很遗憾!添加失败',{icon:1,time:1000});
