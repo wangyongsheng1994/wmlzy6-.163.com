@@ -6,6 +6,7 @@ class User extends Allow
 {
 	public function index(){
 		$data = model("user")->with("role")->select();
+        // dump($data);
 		return view("index",['data'=>$data]);
 	}
 	 // 状态禁用
@@ -30,13 +31,17 @@ class User extends Allow
     }
     public function add(){
     	if(request()->post()){
-    		$data = request()->except("s_province,s_city,s_county");
+    		$data = request()->except("s_province,s_city,s_county,password,password2");
+            $password = md5($_POST['password']);
             $sheng = $_POST['s_province'];
             $shi = $_POST['s_city'];
             $xiang = $_POST['s_county'];
+            $data['password'] = $password;
             $data['address'] = $sheng.$shi.$xiang;
     		$data['status'] = 1;
     		$data['time'] = time();
+            // dump($data);
+            // die;
     		if(model("user")->allowField(true)->save($data)){
     			return "恭喜您!添加成功";
     		}else{

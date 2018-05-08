@@ -12,29 +12,25 @@
 			<label class="form-label col-xs-4 col-sm-1">行业选择：</label>
 			<div class="formControls col-xs-8 col-sm-3">
 				<span class="select-box">
-					<select class="select" size="1" onchange="gradeChanges()" id="b" name="webcate_id">
+					<select class="select" size="1" onchange="gradeChange()" id="dutyId" name="webcate_id">
 						<option value="0">-----------暂未选择---------</option>
 						{foreach name="webcate" item="voo"}
-						<option id="selects" value="{$voo.id}">{:str_repeat('|——',$voo.level)}{$voo['industry']}</option>
+						<option value="{$voo.id}">{:str_repeat('|——',$voo.level)}{$voo['industry']}</option>
 						{/foreach}
 					</select>
 				</span>
 			</div>
 		</div>
+		
 		<br>
-
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-1">文章选择：</label>
-			<div class="formControls col-xs-8 col-sm-3">
-				<span class="select-box">
-					<select class="select" size="1" onchange="gradeChangess()" id="a" name="article_id">
-						<option value="0">-----------暂未选择---------</option>
-						
-					</select>
-				</span>
-			</div>
+			<div class="formControls col-xs-8 col-sm-3" onchange="gradeChanges()" id="userSelect">
+			
+
+			 </div>
 		</div>
-		<br>
+		
 		<br>
 		<br>
 		<br>
@@ -49,16 +45,8 @@
 				<th width="100">账号</th>
 			</tr>
 		</thead>
-		<tbody id="resLists">
-			<!-- {volist name="message" id="vo"}
-			<tr class="text-c">
-				<td><input type="checkbox" value="{$vo.id}" name=""></td>
-				<td>{$vo.id}</td>
-				<td>{$vo.name}</td>
-				<td>{$vo.url}</td>
-				<td>{$vo.username}</td>
-			</tr>
-			{/volist} -->
+		<tbody id="resTal">
+			
 		</tbody>
 	</table>
 	
@@ -91,47 +79,6 @@
 <script type="text/javascript" src="__ADMIN__/admin/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
 <script type="text/javascript" src="__ADMIN__/admin/lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
-
-function gradeChanges(){
-	//var objS = document.getElementById("dutyId");
-	var options=$("#b option:selected");
-	var id = options.val();
-	var url = "{:url('select')}";
-	var option = '';
-	$.post(url,{id:id},function(data){
-		 
-		for(var i = 0;i< data.length; i++){
-			option +='<option value="'+data[i].id+'">'+data[i].title+'</option>';
-		}
-		 $("#a").html(option);
-	})
-}
-
-function gradeChangess(){
-	var options=$("#b option:selected");
-	var id = options.val();
-	var url = "{:url('selects')}";
-	var option = '';
-	$.post(url,{id:id},function(data){
-		console.log(data);
-		var html = '';
-		for(var i = 0; i < data.length; i++){
-			html += '<tr class="text-c">'+
-						'<td><input type="checkbox" value='+data[i]['id']+' name=""></td>'+
-		     			'<td>'+data[i]['id']+'</td>'+
-		     			'<td>'+data[i]['name']+'</td>'+
-		     			'<td>'+data[i]['url']+'</td>'+
-						'<td>'+data[i]['username']+'</td>'+
-		     			'</tr>';
-		}
-		$("#resLists").html(html);
-	})
-
-
-}
-
-
-
 $(function(){
 	$('.skin-minimal input').iCheck({
 		checkboxClass: 'icheckbox-blue',
@@ -139,7 +86,61 @@ $(function(){
 		increaseArea: '20%'
 	});
 });
+
+function gradeChange(){
+	var options=$("#dutyId option:selected");
+	var id = options.val();
+	var url = "{:url('index')}";
+	$.post(url,{id:id},function(data){
+		var html = '';
+		var option = '';
+		for(var i = 0; i < data.length; i++){
+			option += '<option value="'+data[i].id+'">'+data[i].title+'</option>';
+		}
+		html +='<span class="select-box">'+
+        			'<select class="select" size="1" name="article_id">'+
+        			'<option value="0">---请选择---</option>'+
+        			option+
+        			'</select>'+
+        			'</span>';
+        $("#userSelect").html(html);
+	});
+}
+function gradeChanges(){
+	var options=$("#userSelect option:selected");
+	var id = options.val();
+	var url = "{:url('indexs')}";
+	$.post(url,{id:id},function(data){
+		var html = '';
+		for(var i = 0; i < data.length; i++){
+			html +='<tr class="text-c">'+
+						'<td><input type="checkbox" name="" value=""></td>'+
+						'<td>'+data[i]['id']+'</td>'+
+		     			'<td>'+data[i]['name']+'</td>'+
+		     			'<td>'+data[i]['url']+'</td>'+
+		     			'<td>'+data[i]['username']+'</td>'+
+		     			'</tr>';
+		     			$("#resTal").html(html);
+		}
+		
+	});
+}
 function allput(){
+	layer.confirm('确定要发送吗',function(index){
+		arr=[];
+		$(":checkbox").each(function(){
+	      //获取选中数据的id
+	      if($(this).prop("checked")){
+	        id=$(this).val();
+	        
+	        arr.push(id);
+	      }
+	    })
+		alert(arr);
+	})
+}
+
+/*function allput(){
   layer.confirm('确定要发送吗',function(index){
     arr=[];
     // 便利出来所有的复选框
@@ -184,8 +185,12 @@ function allput(){
     	}
     )
   });
-}
+}*/
 </script> 
 <!--/请在上方写此页面业务相关的脚本-->
 </body>
 </html>
+
+
+
+

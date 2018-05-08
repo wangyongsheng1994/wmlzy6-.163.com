@@ -42,19 +42,24 @@ class Index extends Allow
         $this->assign('data',$data);
     	return view("welcome");
     }
+    /*个人信息修改*/
     public function info(){
         $id = Session::get("islogin");
         $data = model("user")->with('role')->with('Roles')->where("id",$id)->find();
         if(request()->isAjax()){
-           $dataws = request()->param();
-           $oldpassword = request()->param("oldpassword");
-            if($dataws['password'] == null){
-                $dataws['password'] = $oldpassword;
+            $uid = Session::get("islogin");
+            $oldpassword = request()->param("oldpassword");
+            $user = model("user")->where("id",$uid)->find();
+            // dump($user['password']);
+            if($user['password'] != md5($oldpassword)){
+                return "旧密码输入错误";
             }
-            if(model("user")->allowField(true)->save($dataws,['id' => $id])){
-                return "修改成功";
+            $info = request()->except("oldpassword,password2,password");
+            $info['password'] = md5($_POST['password']);
+            if(model("user")->allowField(true)->save($info,['id'=>$uid])){
+              return "修改成功";
             }else{
-                return "修改失败";
+              return "修改失败";
             }
         }
         return view("info",['data'=>$data]);
