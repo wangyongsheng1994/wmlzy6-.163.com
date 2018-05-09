@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>app更新</title>
+    <link href="__ADMIN__/admin/update/bootstrap.min.css" rel="stylesheet">
+    <link href="__ADMIN__/admin/update/font-awesome.css" rel="stylesheet">
+    <link href="__ADMIN__/admin/update/custom.css" rel="stylesheet">
+    <link href="__ADMIN__/admin/update/animate.css" rel="stylesheet"> 
+    <link href="__ADMIN__/admin/update/style.css" rel="stylesheet">
+    <link href="__ADMIN__/admin/update/awesome-bootstrap-checkbox.css" rel="stylesheet"> 
+    <style type="text/css">
+        body{
+            background: #f3f3f4;
+        }
+        #page-wrapper{
+            position: relative;
+            margin: auto auto; 
+        }
+    </style>
+</head>
+<body>
+        <div id="page-wrapper" class="gray-bg">
+        
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>app更新</h5> 
+                        </div>
+                        <div class="ibox-content">
+                            <form action="{:url('upfile')}" method="post" class="form-horizontal" enctype="multipart/form-data">
+                                <div class="form-group"><label class="col-sm-2 control-label">版本号</label>
+
+                                    <div class="col-sm-10"><input name="edition" type="text" class="form-control" required="required" ></div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group"><label class="col-sm-2 control-label">app文件</label>
+                                    <div class="col-sm-10"><input name="app" type="file" class="form-control" required="required" > 
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group"><label class="col-sm-2 control-label">描述</label> 
+
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" name="descript">
+                                            
+                                        </textarea>
+                                        <!-- <input type="text" class="form-control" name="password"> --></div>
+                                </div>
+                                
+
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+                                    <div class="col-sm-4 col-sm-offset-2"> 
+                                        <!-- <button class="btn btn-white" id="canel" >取消</button> -->
+                                        <button class="btn btn-primary" id="save" type="submit">上传</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+    <!-- Mainly scripts -->
+    <script src="__ADMIN__/admin/update/jquery-2.1.1.js"></script>
+    <script src="__ADMIN__/admin/update/bootstrap.min.js"></script>
+    <script src="__ADMIN__/admin/update/jquery.metisMenu.js"></script>
+    <script src="__ADMIN__/admin/update/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="__ADMIN__/admin/update/inspinia.js"></script>
+    <script src="__ADMIN__/admin/update/pace.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="__ADMIN__/admin/update/icheck.min.js"></script>      
+        <script>
+            $(document).ready(function () {
+                $('.i-checks').iCheck({
+                    checkboxClass: 'icheckbox_square-green',
+                    radioClass: 'iradio_square-green', 
+                });
+            });
+
+        </script>
+</body>
+
+</html>
