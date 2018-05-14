@@ -6,8 +6,9 @@ class Article extends Controller
 {
 	public function index(){
 		$data = model("article")->with("Webcate")->select();
-		// dump($data);die;
-		return view("index",['data'=>$data]);
+		$tot = model("article")->with("Webcate")->count();
+		// dump($tot);die;
+		return view("index",['data'=>$data,"tot"=>$tot]);
 	}
 	public function add(){
 		$webcate = getList(db("webcate")->select());

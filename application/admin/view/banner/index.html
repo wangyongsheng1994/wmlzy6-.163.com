@@ -1,0 +1,90 @@
+{include file="public/header"}
+<title>图片展示</title>
+<link href="__ADMIN__/admin/lib/lightbox2/2.8.1/css/lightbox.css" rel="stylesheet" type="text/css" >
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 图片管理 <span class="c-gray en">&gt;</span> 图片展示 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<a href="javascript:;" onclick=member_add('图片添加','{:url('add')}','1100','800') class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 图片添加</a>
+
+			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+		</span>
+			<span class="r">共有数据：<strong>{$tot}</strong> 条</span> </div>
+	<div class="portfolio-content">
+		<ul class="cl portfolio-area">
+			{foreach name="data" item="vo"}
+			<li class="item">
+				<div class="portfoliobox">
+					<input class="checkbox" name="" type="checkbox" value="{$vo.id}">
+					<div class="picbox"><a href="{$vo.url}" data-lightbox="gallery" data-title="{$vo['id']}"><img src="{$vo['url']}"></a></div>
+						<div class="textbox">
+								<label><input type="radio" id="sex-1" value="{$vo.id}" show="{$vo.is_show}" name="sex{$vo.id}" {if condition="$vo.is_show eq 1"}checked{else/}{/if}>显示</label>
+								<label><input type="radio" id="sex-2" value="{$vo.id}" show="{$vo.is_show}" name="sex{$vo.id}" {if condition="$vo.is_show eq 0"}checked{else/}{/if}>不显示</label>
+						</div>
+				</div>
+			</li>
+			{/foreach}
+		</ul>
+	</div>
+</div>
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer"}
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__ADMIN__/admin/lib/lightbox2/2.8.1/js/lightbox.min.js"></script> 
+<script type="text/javascript">
+$('input[type="radio"]').click(function(){
+	var id = $(this).val();
+	var show = $(this).attr('show');
+	// alert(show);
+	var url = '{:url("check")}';
+	$.post(url,{id:id,show:show},function(data){
+		// alert(data);
+		if(data == 200){
+			layer.msg(data.msg,{icon:1,time:1300});
+		}else{
+			layer.msg(data.msg,{icon:1,time:1300});
+		}
+	})
+})
+$(function(){
+	$(".portfolio-area li").Huihover();
+});
+/*图片-添加*/
+function member_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+/*批量-删除*/
+function datadel(){
+  layer.confirm('确认要删除吗？',function(index){
+    arr=[];
+    // 便利出来所有的复选框
+    $(":checkbox").each(function(){
+      //获取选中数据的id
+      if($(this).prop("checked")){
+        id=$(this).val();
+        arr.push(id);
+      }
+    })
+    // alert(arr);
+    var url="{:url('alldel')}";
+    $.post(url,{arr:arr},function(data){
+      // alert(data);
+     if(data.state == 200){
+        for(var i=0;i<arr.length;i++){
+	        //根据id获取input tr 
+	        $("input[value='"+arr[i]+"']").parents("li").remove();
+      	}
+      	layer.msg(data.msg,{icon:1,time:1300});
+     }else{
+     	layer.msg(data.msg,{icon:5,time:1300});
+     }
+    })
+  });
+}
+</script>
+</body>
+</html>

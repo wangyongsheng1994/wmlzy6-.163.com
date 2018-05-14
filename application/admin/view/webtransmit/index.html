@@ -98,7 +98,7 @@ function gradeChange(){
 			option += '<option value="'+data[i].id+'">'+data[i].title+'</option>';
 		}
 		html +='<span class="select-box">'+
-        			'<select class="select" size="1" name="article_id">'+
+        			'<select class="select" size="1" id="a" name="article_id">'+
         			'<option value="0">---请选择---</option>'+
         			option+
         			'</select>'+
@@ -114,7 +114,7 @@ function gradeChanges(){
 		var html = '';
 		for(var i = 0; i < data.length; i++){
 			html +='<tr class="text-c">'+
-						'<td><input type="checkbox" name="" value=""></td>'+
+						'<td><input type="checkbox" name="check" value="'+data[i]['id']+'"></td>'+
 						'<td>'+data[i]['id']+'</td>'+
 		     			'<td>'+data[i]['name']+'</td>'+
 		     			'<td>'+data[i]['url']+'</td>'+
@@ -127,16 +127,17 @@ function gradeChanges(){
 }
 function allput(){
 	layer.confirm('确定要发送吗',function(index){
-		arr=[];
-		$(":checkbox").each(function(){
+		var url = "{:url('add')}";
+		var arr=[];
+		$('input[name="check"]:checked').each(function(){
 	      //获取选中数据的id
-	      if($(this).prop("checked")){
-	        id=$(this).val();
-	        
+	        var id=$(this).val();
 	        arr.push(id);
-	      }
 	    })
-		alert(arr);
+	    var article_id = $("#a").val();
+	     $.post(url,{arr:arr,article_id:article_id},function(data){
+	     	alert(data);
+	     })
 	})
 }
 

@@ -6,8 +6,9 @@ class User extends Allow
 {
 	public function index(){
 		$data = model("user")->with("role")->select();
+        $tot = model("user")->count();
         // dump($data);
-		return view("index",['data'=>$data]);
+		return view("index",['data'=>$data,"tot" => $tot]);
 	}
 	 // 状态禁用
     public function stop(){
@@ -40,8 +41,11 @@ class User extends Allow
             $data['address'] = $sheng.$shi.$xiang;
     		$data['status'] = 1;
     		$data['time'] = time();
-            // dump($data);
-            // die;
+            $file = request()->file('image');
+            $info = $file->move( './image');
+            $savename = $info->getSaveName();
+            $path = str_replace('\\','/',$savename);
+            $data['image'] = '/image'.'/'.$path;
     		if(model("user")->allowField(true)->save($data)){
     			return "恭喜您!添加成功";
     		}else{
@@ -53,13 +57,19 @@ class User extends Allow
     public function edit($id){
     	if(request()->post()){
     		$id = request()->param("id");
-    		$data = request()->except("id");
-    		if(model("user")->allowField(true)->save($data,['id'=>$id])){
+    		$data = request()->except("id,image");
+    		$file = request()->file('image');
+            $info = $file->move( './image');
+            $savename = $info->getSaveName();
+            $path = str_replace('\\','/',$savename);
+            $data['image'] = '/image'.'/'.$path;
+            // dump($data);
+            if(model("user")->allowField(true)->save($data,['id'=>$id])){
     			return "恭喜您!修改成功";
     		}else{
     			return "400";
     		}
-    	}
+        }
     	$data = model("user")->find($id);
     	return view("edit",['data'=>$data]);
     }

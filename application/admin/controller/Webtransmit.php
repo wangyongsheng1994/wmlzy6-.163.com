@@ -51,24 +51,38 @@ class Webtransmit extends Controller
         return $data;
     }
     public function add(){
-      //文章id
-      $article_id = $_POST['article_id'];
-      // 行业 网站类别id
-      $webcate_id = $_POST['webcate_id'];
       $arr = isset($_POST['arr'])?$_POST['arr']:"";
-      // return $arr.":".$article.":".$arr;
+      $article_id = $_POST['article_id'];
       /*查询出来文章*/
       $articles = db("article")->where("id",$article_id)->find();
-      /*查询出来所所属行业*/
-      //$cate = db("webcate")->where("id",$webcate_id)->find();
-      $articles['cate'] =$webcate_id;
-      /*查询出来需要的网站*/
-      $arr = implode(",",$arr);
-      //定义返回数组
-      $brr = [];
-      //查询要发送的地址
+      // 查询出来需要发送的地址
       $message = db("message")->where("id","in",$arr)->select();
-      dump($message);
+      foreach($message as $k => $v){
+        // $res = $this->curl($message[$k]['url'],$articles);
+        // return $res;
+        dump($v['url']);
+      }
+
+    }
+    // public function add(){
+    //   //文章id
+    //   $article_id = $_POST['article_id'];
+    //   // 行业 网站类别id
+    //   $webcate_id = $_POST['webcate_id'];
+    //   $arr = isset($_POST['arr'])?$_POST['arr']:"";
+    //   // return $arr.":".$article.":".$arr;
+    //   /*查询出来文章*/
+    //   $articles = db("article")->where("id",$article_id)->find();
+    //   /*查询出来所所属行业*/
+    //   //$cate = db("webcate")->where("id",$webcate_id)->find();
+    //   $articles['cate'] =$webcate_id;
+    //   /*查询出来需要的网站*/
+    //   $arr = implode(",",$arr);
+    //   //定义返回数组
+    //   $brr = [];
+    //   //查询要发送的地址
+    //   $message = db("message")->where("id","in",$arr)->select();
+    //   dump($message);
       // // 循环
       // foreach($message as $k=>$v){
       //   //提交
@@ -90,6 +104,6 @@ class Webtransmit extends Controller
 
       // }
       // return $brr;
-    }
+    // }
 
 }

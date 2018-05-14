@@ -1,370 +1,197 @@
 {include file="public/header"}
-<title>添加信息</title>
+<title>新增图片</title>
 <link href="__ADMIN__/admin/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
-<meta name="keywords" content="">
-<meta name="description" content="">
 </head>
 <body>
-<article class="page-container">
-	<form class="form form-horizontal" id="form-admin-add">
-	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>收到日期：</label>
-		<div class="formControls col-xs-8 col-sm-2">
-			<input type="date" class="input-text" placeholder="" id="receive_time" name="receive_time">
-		</div>
-		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>启用日期：</label>
-		<div class="formControls col-xs-6 col-sm-2">
-			<input type="date" class="input-text" placeholder="" id="use_time" name="use_time">
-		</div>
-	</div>
-	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>用印部门：</label>
-		<div class="formControls col-xs-5 col-sm-6">
-				<span class="select-box">
-					<select class="select" size="1" name="role_id">
-						<option value="0">---请选择---</option>
-						{foreach name="role" item="vo"}
-						<option value="{$vo.id}">{:str_repeat('|——',$vo.level)}{$vo.name}</option>
-						{/foreach}
-					</select>
-				</span>
-		</div>
-	</div>
+<div class="page-container">
+    <form class="form form-horizontal" id="form-admin-add">
+        <input type="hidden" name="id" value="{$data['id']}">
+        <input type="hidden" name="img" value="{$data['image']}">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">原图片：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+        {for start="0" end="100"}
+            {if condition="!empty($imagess[$i])"}
+               <img src="{$imagess[$i]}" style="height:150px;width:150px;">
+            {/if}
+        {/for}
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">案例图片：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <div class="uploader-list-container"> 
+                    <div class="queueList">
+                        <div id="dndArea" class="placeholder">
+                            <div id="filePicker-2"></div>
+                            <p>或将照片拖到这里</p>
+                        </div>
+                    </div>
+                    <div class="statusBar" style="display:none;">
+                        <div class="progress"> <span class="text">0%</span> <span class="percentage"></span> </div>
+                        <div class="info"></div>
+                        <div class="btns">
+                            <div id="filePicker2"></div>
+                            <div class="uploadBtn">开始上传</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="file" id="imgs" value="">
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+                 <button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </form>
+</div>
 
-	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>印章类型：</label>
-		<div class="formControls col-xs-5 col-sm-6">
-				<span class="select-box">
-					<select class="select" size="1" name="seal_type">
-						<option value="0">---请选择---</option>
-						<option value="公章">---公章---</option>
-						<option value="法人章">---法人章---</option>
-						<option value="财务章">---财务章---</option>
-						<option value="合同章">---合同章---</option>
-						<option value="其他">---其他---</option>
-					</select>
-				</span>
-		</div>
-	</div>
 
-	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>申请理由：</label>
-		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" autocomplete="off"  placeholder="申请理由" id="result" name="result">
-		</div>
-	</div>
-	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>使用范围：</label>
-		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" value="" placeholder="" id="scope" name="scope">
-		</div>
-	</div>
-	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>印章名称：</label>
-		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" placeholder="" name="seal_name" id="seal_name">
-		</div>
-	</div>
-	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>枚数：</label>
-		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" placeholder="请输入数字" onkeyup="value=value.replace(/[^\d]/g,'')" name="seal_num" id="seal_num">
-		</div>
-	</div>
-	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>盖章内容概要：</label>
-		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" placeholder="" name="seal_descr" id="seal_descr">
-		</div>
-	</div>
-	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>份数：</label>
-		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" placeholder="请输入数字" onkeyup="value=value.replace(/[^\d]/g,'')" name="number" id="number">
-		</div>
-	</div>
-
-	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-2">用印人：</label>
-		<div class="formControls col-xs-5 col-sm-2">
-			<span class="select-box">
-				<select class="select" size="1" onchange="gradeChanges()" id="dutyIds" name="roles">
-					<option value="0">---请选择---</option>
-					{foreach name="personal" item="vo"}
-					<option value="{$vo.id}">{:str_repeat('|-',$vo.level)}{$vo.name}</option>
-					{/foreach}
-				</select>
-			</span>
-		</div>
-		<div class="formControls col-xs-5 col-sm-2" id="userSelects"></div>
-	</div>
-		
-	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-2">批准人：</label>
-		<div class="formControls col-xs-5 col-sm-2">
-			<span class="select-box">
-				<select class="select" size="1" onchange="gradeChange()" id="dutyId" name="role">
-					<option value="0">---请选择---</option>
-					{foreach name="personal" item="vo"}
-					<option value="{$vo.id}">{:str_repeat('|-',$vo.level)}{$vo.name}</option>
-					{/foreach}
-				</select>
-			</span>
-		</div>
-		<div class="formControls col-xs-5 col-sm-2" id="userSelect"></div>
-	</div>
-
-	<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">图片上传：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<div class="uploader-list-container"> 
-					<div class="queueList">
-						<div id="dndArea" class="placeholder">
-							<div id="filePicker-2"></div>
-							<p>或将照片拖到这里，单次最多可选300张</p>
-						</div>
-					</div>
-					<div class="statusBar" style="display:none;">
-						<div class="progress"> <span class="text">0%</span> <span class="percentage"></span> </div>
-						<div class="info"></div>
-						<div class="btns">
-							<div id="filePicker2"></div>
-							<div class="uploadBtn">开始上传</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	<input type="hidden" name="image" id="imgs" value="">
-	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>备注：</label>
-		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" placeholder="" name="beizhu" id="beizhu">
-		</div>
-	</div>
-
-	<div class="row cl">
-		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
-		</div>
-	</div>
-	</form>
-</article>
-
-<!--_footer 作为公共模版分离出去--> 
+<!--_footer 作为公共模版分离出去-->
 {include file="public/footer"}
-<!--/_footer 作为公共模版分离出去-->
+<!--/_footer /作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="__ADMIN__/admin/lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
 <script type="text/javascript" src="__ADMIN__/admin/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
-<script type="text/javascript" src="__ADMIN__/admin/lib/jquery.validation/1.14.0/messages_zh.js"></script>
-<script type="text/javascript" src="__ADMIN__/admin/lib/webuploader/0.1.5/webuploader.min.js"></script>
+<script type="text/javascript" src="__ADMIN__/admin/lib/jquery.validation/1.14.0/messages_zh.js"></script> 
+<script type="text/javascript" src="__ADMIN__/admin/lib/webuploader/0.1.5/webuploader.min.js"></script> 
 <script type="text/javascript">
 $(function(){
-	$('.skin-minimal input').iCheck({
-		checkboxClass: 'icheckbox-blue',
-		radioClass: 'iradio-blue',
-		increaseArea: '20%'
-	});
-	
-	$("#form-admin-add").validate({
-		rules:{
-			receive_time:{
-				required:true,
-			},
-			use_time:{
-				required:true,
-			},
-			role_id:{
-				required:true,
-			},
-			result:{
-				required:true,	
-			},
-			scope:{
-				required:true,
-			},
-			seal_name:{
-				required:true,
-			},
-			seal_num:{
-				required:true,
-			},
-			seal_descr:{
-				required:true,
-			},
-			number:{
-				required:true,
-			},
-			seal_type:{
-				required:true,
-			},
-			seal_use_name:{
-				required:true,
-			},
-			seal_roval_name:{
-				required:true,
-			}
-			
-		},
-		onkeyup:false,
-		focusCleanup:true,
-		success:"valid",
-		submitHandler:function(form){
+    $('.skin-minimal input').iCheck({
+        checkboxClass: 'icheckbox-blue',
+        radioClass: 'iradio-blue',
+        increaseArea: '20%'
+    });
+    
+    $("#form-admin-add").validate({
+        rules:{
+            title:{
+                required:true,
+                minlength:4
+            },
+            autor:{
+                required:true,
+            },
+            content:{
+             required:true,
+            minlength:10
+            }
+        },
+        onkeyup:false,
+        focusCleanup:true,
+        success:"valid",
+        submitHandler:function(form){
             $(form).ajaxSubmit({
                 type: 'post',
-                url: "{:url('insert')}" ,
+                url: "{:url('picupdate')}" ,
                 success: function(data){
-                	// alert(data);
-                	// console.log(data);
-		                layer.msg(data,{icon:1,time:1500},function(){
-		                    parent.window.location.href="{:url('index')}";
-		                    var index=parent.layer.getFrameIndex(window.name);
-		                    parent.layer.close(index);
-		                });	
+                    layer.msg(data,{icon:1,time:1500},function(){
+                        parent.window.location.href="{:url('index')}";
+                        var index=parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+
+                    });
+                    // alert(data);
+                    // console.log(data);
                 },
                 error: function(XmlHttpRequest, textStatus, errorThrown){
                     layer.msg('很遗憾!添加失败',{icon:1,time:1000});
                 }
             });
         }
-	});
+    });
 });
-/*用印人*/
-function gradeChanges(){
-	//var objS = document.getElementById("dutyId");
-	var options=$("#dutyIds option:selected");
-	var id = options.val();
-	// alert(id);
-	$.post("{:url('add')}",{id:id},function(data){
-        // alert(data);
-        var html ='',option ='';
-        for (var i = 0 ; i < data.length; i++) {
-        	option +='<option value="'+data[i].id+'">'+data[i].username+'</option>';
-
-        }
-        html += '<span class="select-box">'+
-        			'<select class="select" size="1" name="seal_use_name">'+
-        			'<option value="0">---请选择---</option>'+
-        			option+
-        			'</select>'+
-        			'</span>';
-        
-        $("#userSelects").html(html);
-	})
+function article_save(){
+    alert("刷新父级的时候会自动关闭弹层。")
+    window.parent.location.reload();
 }
-
-/*批准人*/
-function gradeChange(){
-	//var objS = document.getElementById("dutyId");
-	var options=$("#dutyId option:selected");
-	var id = options.val();
-	// alert(id);
-	$.post("{:url('add')}",{id:id},function(data){
-        // alert(data);
-        var html ='',option ='';
-        for (var i = 0 ; i < data.length; i++) {
-        	option +='<option value="'+data[i].id+'">'+data[i].username+'</option>';
-
-        }
-        html += '<span class="select-box">'+
-        			'<select class="select" size="1" name="seal_roval_name">'+
-        			'<option value="0">---请选择---</option>'+
-        			option+
-        			'</select>'+
-        			'</span>';
-        
-        $("#userSelect").html(html);
-	})
-}
-
-
-/* ************************************************************************************ */
 
 $(function(){
-	$('.skin-minimal input').iCheck({
-		checkboxClass: 'icheckbox-blue',
-		radioClass: 'iradio-blue',
-		increaseArea: '20%'
-	});
-	
-	$list = $("#fileList"),
-	$btn = $("#btn-star"),
-	state = "pending",
-	uploader;
+    $('.skin-minimal input').iCheck({
+        checkboxClass: 'icheckbox-blue',
+        radioClass: 'iradio-blue',
+        increaseArea: '20%'
+    });
+    
+    $list = $("#fileList"),
+    $btn = $("#btn-star"),
+    state = "pending",
+    uploader;
 
-	var uploader = WebUploader.create({
-		auto: true,
-		swf: '__ADMIN__/admin/lib/webuploader/0.1.5/Uploader.swf',
-	
-		// 文件接收服务端。
-		server: '{:url("imageadd")}',
-	
-		// 选择文件的按钮。可选。
-		// 内部根据当前运行是创建，可能是input元素，也可能是flash.
-		pick: '#filePicker',
-	
-		// 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-		resize: false,
-		// 只允许选择图片文件。
-		accept: {
-			title: 'Images',
-			extensions: 'gif,jpg,jpeg,bmp,png',
-			mimeTypes: 'image/*'
-		}
-	});
-	uploader.on( 'fileQueued', function( file ) {
-		var $li = $(
-			'<div id="' + file.id + '" class="item">' +
-				'<div class="pic-box"><img></div>'+
-				'<div class="info">' + file.name + '</div>' +
-				'<p class="state">等待上传...</p>'+
-			'</div>'
-		),
-		$img = $li.find('img');
-		$list.append( $li );
-	
-		// 创建缩略图
-		// 如果为非图片文件，可以不用调用此方法。
-		// thumbnailWidth x thumbnailHeight 为 100 x 100
-		uploader.makeThumb( file, function( error, src ) {
-			if ( error ) {
-				$img.replaceWith('<span>不能预览</span>');
-				return;
-			}
-	
-			$img.attr( 'src', src );
-		}, thumbnailWidth, thumbnailHeight );
-	});
-	// 文件上传过程中创建进度条实时显示。
-	uploader.on( 'uploadProgress', function( file, percentage ) {
-		var $li = $( '#'+file.id ),
-			$percent = $li.find('.progress-box .sr-only');
-	
-		// 避免重复创建
-		if ( !$percent.length ) {
-			$percent = $('<div class="progress-box"><span class="progress-bar radius"><span class="sr-only" style="width:0%"></span></span></div>').appendTo( $li ).find('.sr-only');
-		}
-		$li.find(".state").text("上传中");
-		$percent.css( 'width', percentage * 100 + '%' );
-	});
-	
-	// 文件上传成功，给item添加成功class, 用样式标记上传成功。
-	uploader.on( 'uploadSuccess', function( file ) {
-		$( '#'+file.id ).addClass('upload-state-success').find(".state").text("已上传");
-	});
-	
-	// 文件上传失败，显示上传出错。
-	uploader.on( 'uploadError', function( file ) {
-		$( '#'+file.id ).addClass('upload-state-error').find(".state").text("上传出错");
-	});
-	
-	// 完成上传完了，成功或者失败，先删除进度条。
-	uploader.on( 'uploadComplete', function( file ) {
-		$( '#'+file.id ).find('.progress-box').fadeOut();
-	});
-	uploader.on('all', function (type) {
+    var uploader = WebUploader.create({
+        auto: true,
+        swf: '/static/admin/lib/webuploader/0.1.5/Uploader.swf',
+    
+        // 文件接收服务端。
+        server: '{:url("imageadd")}',
+    
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: '#filePicker',
+    
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false,
+        // 只允许选择图片文件。
+        accept: {
+            title: 'Images',
+            extensions: 'gif,jpg,jpeg,bmp,png',
+            mimeTypes: 'image/*'
+        }
+    });
+    uploader.on( 'fileQueued', function( file ) {
+        var $li = $(
+            '<div id="' + file.id + '" class="item">' +
+                '<div class="pic-box"><img></div>'+
+                '<div class="info">' + file.name + '</div>' +
+                '<p class="state">等待上传...</p>'+
+            '</div>'
+        ),
+        $img = $li.find('img');
+        $list.append( $li );
+    
+        // 创建缩略图
+        // 如果为非图片文件，可以不用调用此方法。
+        // thumbnailWidth x thumbnailHeight 为 100 x 100
+        uploader.makeThumb( file, function( error, src ) {
+            if ( error ) {
+                $img.replaceWith('<span>不能预览</span>');
+                return;
+            }
+    
+            $img.attr( 'src', src );
+        }, thumbnailWidth, thumbnailHeight );
+    });
+    // 文件上传过程中创建进度条实时显示。
+    uploader.on( 'uploadProgress', function( file, percentage ) {
+        var $li = $( '#'+file.id ),
+            $percent = $li.find('.progress-box .sr-only');
+    
+        // 避免重复创建
+        if ( !$percent.length ) {
+            $percent = $('<div class="progress-box"><span class="progress-bar radius"><span class="sr-only" style="width:0%"></span></span></div>').appendTo( $li ).find('.sr-only');
+        }
+        $li.find(".state").text("上传中");
+        $percent.css( 'width', percentage * 100 + '%' );
+    });
+    
+    // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+    uploader.on( 'uploadSuccess', function( file ) {
+        $( '#'+file.id ).addClass('upload-state-success').find(".state").text("已上传");
+    });
+    
+    // 文件上传失败，显示上传出错。
+    uploader.on( 'uploadError', function( file ) {
+        $( '#'+file.id ).addClass('upload-state-error').find(".state").text("上传出错");
+    });
+    
+    // 完成上传完了，成功或者失败，先删除进度条。
+    uploader.on( 'uploadComplete', function( file ) {
+        $( '#'+file.id ).find('.progress-box').fadeOut();
+    });
+    uploader.on('all', function (type) {
         if (type === 'startUpload') {
             state = 'uploading';
         } else if (type === 'stopUpload') {
@@ -540,7 +367,7 @@ $(function(){
             },
             dnd: '#dndArea',
             paste: '#uploader',
-            swf: '__ADMIN__/admin/lib/webuploader/0.1.5/Uploader.swf',
+            swf: '/static/admin/lib/webuploader/0.1.5/Uploader.swf',
             chunked: false,
             chunkSize: 512 * 1024,
             server: '{:url("imageadd")}',
@@ -581,17 +408,6 @@ $(function(){
         uploader.on('dialogOpen', function() {
             console.log('here');
         });
-
-        // uploader.on('filesQueued', function() {
-        //     uploader.sort(function( a, b ) {
-        //         if ( a.name < b.name )
-        //           return -1;
-        //         if ( a.name > b.name )
-        //           return 1;
-        //         return 0;
-        //     });
-        // });
-
         // 添加“添加文件”的按钮，
         uploader.addButton({
             id: '#filePicker2',
@@ -771,18 +587,6 @@ $(function(){
             spans.eq( 1 ).css( 'width', Math.round( percent * 100 ) + '%' );
             updateStatus();
         }
-         // 此处为需要添加的代码
-        // 此处为需要添加的代码
-        // 此处为需要添加的代码
-        // 文件上传成功
-        var imgs='';
-        uploader.on( 'uploadSuccess', function(file,ret) {
-            //$( '#'+file.id ).addClass('upload-state-success').find(".state").text("已上传");
-               // console.log(file); 
-            imgs += ret._raw +',';
-            // console.log(imgs);
-            $("#imgs").val(imgs);
-        });
 
         function updateStatus() {
             var text = '', stats;
@@ -874,6 +678,18 @@ $(function(){
 
             updateStatus();
         }
+        // 此处为需要添加的代码
+        // 此处为需要添加的代码
+        // 此处为需要添加的代码
+        // 文件上传成功
+        var imgs='';
+        uploader.on( 'uploadSuccess', function(file,ret) {
+            //$( '#'+file.id ).addClass('upload-state-success').find(".state").text("已上传");
+               // console.log(file); 
+            imgs += ret._raw +',';
+            // console.log(imgs);
+            $("#imgs").val(imgs);
+        });
 
         uploader.onUploadProgress = function( file, percentage ) {
             var $li = $('#'+file.id),
@@ -960,7 +776,6 @@ $(function(){
     });
 
 })( jQuery );
-</script> 
-<!--/请在上方写此页面业务相关的脚本-->
+</script>
 </body>
 </html>
