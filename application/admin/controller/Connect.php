@@ -26,7 +26,7 @@ class Connect extends Controller
 	******** */
 	public function out_index(){
 		$uid = Session::get("islogin");
-		$tot = db("customer")->where("uid",$uid)->count();
+		$tot = db("customer")->count();
 		$data = db("customer")->select();
 		// dump($data);
 		// die;

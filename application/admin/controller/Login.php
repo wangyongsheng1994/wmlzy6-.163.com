@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 use think\Controller;
 use think\facade\Session;
+use think\facade\Cookie;
 class Login extends Controller
 {
 	public function index(){
@@ -12,6 +13,7 @@ class Login extends Controller
 		$username = $_POST['username'];
 		$password = md5($_POST['password']);
 		$code = $_POST['code'];
+		Cookie::set('names',$username,3600);
 		$data=db("user")->where('username',$username)->where('password',$password)->find();
 		// dump($data);
 		// die;

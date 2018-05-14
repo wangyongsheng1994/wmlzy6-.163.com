@@ -1,13 +1,28 @@
 <?php
 namespace app\admin\controller;
 use think\Controller;
+use think\facade\Session;
 class Seal extends Controller
 {
 	public function index(){
 		$data = model("seal")->with("User")->select();
-		// dump($data);die;
-		// $data = db("seal")->select();
+		foreach($data as $k=>$v){
+			$ima = explode(",",$v['image']);
+			foreach($ima as $k1=>$v1){
+				$data[$k]['image'] = $ima[0];
+			}
+		}
 		return view("index",['data'=>$data]);
+	}
+	// 案例图片添加
+	public function imageadd(){
+		$file= request()->file();
+		foreach($file as $key=>$value){
+			$info=$file[$key]->move( './images');
+			$savename=$info->getSaveName();
+			$path = str_replace('\\','/',$savename);
+			echo '/images/'.$path;exit;
+		}	
 	}
 	public function add(){
 		/* 获取到部门角色 */
@@ -23,8 +38,11 @@ class Seal extends Controller
 	}
 	// 执行添加
 	public function insert(){
-		$data = request()->param();
-		// dump($data);exit;
+		$data = request()->except("image");
+		$image = request()->param("image");
+		$uid = Session::get("islogin");
+		$data['image'] = substr($image,0,strlen($image)-1);
+		$data['use_uid'] = $uid;
 		$res = model("seal")->allowField(true)->save($data);
 		if($res){
 			return "提交成功";
@@ -111,4 +129,58 @@ class Seal extends Controller
 			return "error";
 		}
 	}
+	/*
+		以下是图片内部的处理
+	 */
+	// 图片的修改
+	public function picedit(){
+		$id = input("id");
+		$data=db("seal")->where("id",$id)->find();
+		$images=explode(",",$data['image']);
+		$count = count($images);
+		$this->assign([
+			"data" => $data,
+			"images" => $images,
+			"count" => $count
+			]);
+		return view("picedit");
+	}
+	/*图片内部的添加*/
+	public function picupdate($id){
+		$data=db("seal")->where("id",$id)->find();
+		if(request()->post()){
+			$data = request()->except("id");
+			$id = request()->param("id");
+			$oldimage = $data['img'];
+			$data['images'] = substr($data['file'],0,strlen($data['file'])-1);
+			$data['image'] = $data['images'].",".$oldimage;
+			// dump($data);exit;
+			if(model("seal")->allowField(true)->save($data,["id"=>$id])){
+				echo "添加成功";exit;
+			}else{
+				echo "添加失败";exit;
+			}
+		}
+		$imagess=explode(",",$data['image']);
+		$this->assign([
+			'data'=>$data,
+			'imagess'=>$imagess
+			]);
+		return view("picupdate");
+	}
+	/*图片内部的删除*/
+	public function picdelete(){
+		$arr = isset($_POST['arr'])?$_POST['arr']:"";
+		$id=$_POST['id'];
+		$data=model("seal")->where("id",$id)->find();
+		$arr2=explode(",",$data['image']);
+		$arr3=array_diff($arr2,$arr);
+		$str=implode(",",$arr3);
+		if(model("seal")->where("id",$id)->update(['image' => $str])){
+			return 200;
+		}else{
+			return "添加失败";
+		}
+	}
+
 }

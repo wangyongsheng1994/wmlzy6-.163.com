@@ -1,9 +1,9 @@
 {include file="public/header"}
 <link href="__ADMIN__/admin/lib/lightbox2/2.8.1/css/lightbox.css" rel="stylesheet" type="text/css" >
-<title>项目列表</title>
+<title>我带领的</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 项目中心 <span class="c-gray en">&gt;</span> 项目管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 项目管理 <span class="c-gray en">&gt;</span> 我带领的 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<!-- <span class="l">
@@ -23,6 +23,8 @@
         <th width="120">项目成员</th>
         <th width="80">发起人</th>
         <th width="80">发起时间</th>
+        <th width="60">完成状态</th>
+        <th width="30">操作</th>
       </tr>
     </thead>
     <tbody>
@@ -35,6 +37,23 @@
         <td>{$vo.item_group}</td>
         <td>{$vo.create_name}</td>
         <td>{$vo.time|date = "Y-m-d H:i:s"}</td>
+        
+        <td class="td-status">
+			{if condition="$vo['status'] eq 1"}
+        	<span class="label label-success radius">未完成</span>
+			{else/}
+			<span class="label radius">已完成</span>
+			{/if}
+        </td>
+
+        <td class="td-manage"> 
+        	{if condition="$vo['status'] eq 1"}
+			<a style="text-decoration:none" onClick="admin_start(this,'{$vo.id}')" href="javascript:;" title="未完成"><i class="Hui-iconfont">&#xe615;</i></a>
+			{else/}
+			<a style="text-decoration:none" onClick="admin_stop(this,'{$vo.id}')" href="javascript:;" title="已完成"><i class="Hui-iconfont">&#xe631;</i></a>
+			{/if}　
+        	<a title="归档" href="javascript:;" onclick="member_del(this,'{$vo.id}')" class="ml-5" style="text-decoration:none">归档</a>
+        </td>
       </tr>
 	{/foreach}
     </tbody>
@@ -91,49 +110,65 @@ function change_password(title,url,id,w,h){
 }
 /*项目-删除*/
 function member_del(obj,id){
-	layer.confirm('确认要删除吗？',function(index){
-		var url = "{:url('delete')}";
+	layer.confirm('确认要归档吗？',function(index){
+		var url = "{:url('guidang')}";
 		// alert(id);
 		$.post(url,{id:id},function(data){
-			if(data == "200"){
+			if(data.state == "200"){
 				$(obj).parents("tr").remove();
-				layer.msg('已删除!',{icon:1,time:1000});
+				layer.msg(data.msg,{icon:1,time:1000});
 			}else{
-				layer.msg('删除失败!',{icon:1,time:1300});
+				layer.msg(data.msg,{icon:5,time:1300});
 			}
-			// alert(data);
 		});
 	});
 }
-/*管理员-停用*/
+/*
+		状态的怎么怎么
+
+ */
+ /*管理员-停用*/
 function admin_stop(obj,id){
-	layer.confirm('确认要启标为已读？',function(index){
+	layer.confirm('确认要设为未完成？',function(index){
 		//此处请求后台程序，下方是成功后的前台处理……
 		var url="{:url('start')}";
 			$.post(url,{id:id},function(data){
-				$(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_start(this,id)" href="javascript:;" title="已读" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
-				$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已读</span>');
-				$(obj).remove();
-				layer.msg('已标记!',{icon: 5,time:1000});
+				if(data.state == 200){
+					$(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_start(this,id)" href="javascript:;" title="已读" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
+					$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">未完成</span>');
+					$(obj).remove();
+					layer.msg(data.msg,{icon: 6,time:1000});
+				}else{
+					layer.msg(data.msg, {icon: 5,time:1000});
+				}
 		});
 	});
 }
 			
 
-/*管理员-启用*/
+/*项目标为已完成*/
 function admin_start(obj,id){
-	layer.confirm('确认要启标为未读？',function(index){
+	layer.confirm('项目标为已完成',function(index){
 		//此处请求后台程序，下方是成功后的前台处理……
 		var url="{:url('stop')}";
 		$.post(url,{id:id},function(data){
-			$(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_stop(this,id)" href="javascript:;" title="未读" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
-			$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">未读</span>');
+			if(data.state == 200){
+			$(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_stop(this,id)" href="javascript:;" title="已完成" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
+			$(obj).parents("tr").find(".td-status").html('<span class="label radius">已完成</span>');
 			$(obj).remove();
-			layer.msg('已标记!', {icon: 6,time:1000});
+			layer.msg(data.msg, {icon: 6,time:1000});
+			}else{
+			layer.msg(data.msg, {icon: 5,time:1000});	
+			}
 		});
 	});
 }
 
+
+
+/*
+		状态的怎么怎么
+ */
 /*批量-删除*/
 function datadel(){
   layer.confirm('确认要删除吗？',function(index){

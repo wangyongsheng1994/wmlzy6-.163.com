@@ -15,7 +15,7 @@
   <div class="box_wrap">
    <h3>用户登录</h3>
    <form action="{:url('dologin')}" method="post">
-   <p><input class="span12" type="text" name="username" placeholder="用户名"></p>
+   <p><input class="span12" type="text" name="username"{if condition="(!empty($Think.cookie.names))"}value="{$Think.cookie.names}"{else/}{/if}placeholder="用户名"></p>
    <p><input class="span12" type="password" name="password" placeholder="密码"></p>
    <p><input class="span12 yzm" type="text"  name="code" placeholder="验证码">
     <img src="{:captcha_src()}" alt="captcha" onclick="this.src='{:captcha_src()}?'+'math.random()'" /></p>

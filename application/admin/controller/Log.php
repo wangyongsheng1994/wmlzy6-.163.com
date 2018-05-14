@@ -7,200 +7,120 @@ class Log extends Allow
 	public function index(){
 		$uid = Session::get("islogin");
 		 //当前用户
-        $user = model('user')->with('Logts')->find($uid);
-        // dump($user);exit;
-        //用户的角色
-        $roles = model('roles')->find($user['roles_id']);
-        // // dump($roles);
-        return view("index",["user"=>$user['logts'],"use"=>$user]);
+	    $user = model('user')->with('Logts')->find($uid);
+	    // dump($user);exit;
+	    //用户的角色
+	    $roles = model('roles')->find($user['roles_id']);
+	    // // dump($roles);
+	    return view("index",["user"=>$user['logts'],"use"=>$user]);
 	}
 	// 用户日志详细内容
 	public function detail($id){
 		$data = model("log")->find($id);
 		return view("detail",["content"=>$data['content']]);
 	}
-	//审批日志
+	//日志的审批查看 待审批
 	public function correct(){
-		$uid = Session::get("islogin");
-		$user = model('user')->with('Log')->find($uid);
-    // dump($user['role_id']);exit;
-        //用户的角色
-        $roles = model('roles')->find($user['roles_id']);
-        //该用户所属部门管辖的人员 
-        $datas = model('user')->with('Logs')->where('role_id',$user['role_id'])->where('roles_id',$roles['limits'])->select();
-        // dump($datas);exit;
-        // echo "*********************************************************************************"; 
-        $log_arr =[];
-        $key = 0;
-        //该用户除本部门管辖的所有人员及日志
-       	$dutys = getList(model('role')->with('Users')->select(),$user['role_id']);
-        // dump($dutys);exit;
-        foreach ($dutys as $k => $v) {
-          // dump($dutys[$k]['users']);
-          //所有用户
-          foreach ($dutys[$k]['users'] as $kk => $vv) {
-            //所有用户的日志
-            $logLst = $dutys[$k]['users'][$kk]['logs'];
-            // dump($dutys[$k]['users'][$kk]['logs']);
-            foreach ($logLst as $kkk => $vvv) {
-              //每一个日志
-              // dump($logLst[$kk]);
-              $log_flow_arr=explode(',',$logLst[$kkk]['status']);
-              // dump($log_flow_arr);
-              foreach($log_flow_arr as $k1=>$v1){
-                // dump($log_flow_arr[$k1]);
-                if($k1 == 0){
-                  //dump('第一个,是自己部门的'.$kk.'---------'.$vv);
-                  if($v1 == $user['role_id']){
-                    //dump('第一个,是自己部门的'.$kk.'---------'.$vv);
-                    $log_arr['log'][$key] = $vvv;
-                    $key += 1;
-                    //$untreated_arr['table_data'][$k]=$v;                 
-                  }else{
-                     //dump('第一个,不是自己部门的'.$vv);
-                  }        
-                }else{
-                  // dump('不等于0 ===='.$k1); 
-                  if($v1 == $user['role_id'] && $log_flow_arr[$k1-1]== 0){
-                    $log_arr['log'][$key] = $vvv;
-                    $key += 1;
-                    //$untreated_arr['table_data'][$k]=$v;
-                    //dump('不是第一个,是本部门的'.$v1);
-                    // dump('不是第一个,是自己部门的'.$kk.'---------'.$vvv);
-                  
-                  }else{
-                    //dump('不是第一个,不是本部门的'.$vv);
-                  }            
-                }       
-              }
-              
-            }
-
-          }
-        }
-        // dump($log_arr);
-        // die;
-        foreach($log_arr as $ks=>$vs){
-          $log= $log_arr['log'];
-        }
-        if(!isset($datas)){
-          $datas = null;
-        }
-        if(!isset($log)){
-          $log = null;
-        }
-        $this->assign("log",$log);
-        $this->assign("datas",$datas);
-		return view("correct");
-	}
-	// 审批历史
-	public function history(){
-		$uid = Session::get("islogin");
-    $user = model('user')->with('Log')->find($uid);
-    // dump($user['roles_id']);
-    // echo "***********************************************************************";
-    //用户的角色
-        $roles = model('roles')->find($user['roles_id']);
-        // dump($roles['limits']);
-        // echo "***********************************************************************";
-        //该用户所属部门的管辖人员 
-        $data = model('user')->with('Log')->where('role_id',$user['role_id'])->where('roles_id',$roles['limits'])->select();
-        // dump($data);
-        // echo "***********************************************************************";
-        //该用户除本部门管辖的所有人员及日志
-        $dutys = getList(model('role')->with('User')->select(),$user['role_id']);
-        // dump($dutys);exit;
-        if(!isset($data)){
-          $data = null;
-        }
-        if(!isset($dutys)){
-          $dutys = null;
-        }
-        $this->assign("dutys",$dutys);
-        $this->assign("data",$data);
-        // $this->assign("datasone",$datasone);
-        return view("history");
-	}
-    // 添加日志
-    public function add(){
-        if(request()->isAjax()){
-           $id = Session::get("islogin");
-           $username = Session::get("username");
-           $rolename = Session::get("rolename");
-           // 获取到该用户的角色
-           $role = model("user")->with("Role")->find($id);
-           //dump($role['role_id']);die;
-           $rid = $role['role_id'];
-           //dump($rid);exit;
-           $data['status'] = getparentids($rid,$rid.',');
-           $data['title'] = $rolename;
-           $data['name'] = $username;
-           $data['content'] = request()->param("content");
-           $data['time'] = time();
-           $data['user_id'] = $id;
-           $data['status']=rtrim($data['status'], ",");
-           $data['status']=ltrim($data['status'],$rid);
-           $data['status']="0".$data['status'];
-           // dump($data);
-           if(model("log")->allowField(true)->save($data)){
-                return "日志提交成功";
-            }else{
-                return "日志提交失败";
-            }
-        }
-        return view("add");
+    /*审批人的id*/
+    $uid = Session::get("islogin");
+    $user = model("user")->where("id",$uid)->find();
+    $data = model("role")->where("pid",$user['role_id'])->select();          		/*查询出来所有下级的角色*/
+    $arr = [];
+    foreach($data as $k=>$v){
+    	$arr[] = $v['id'];
     }
-    // 日志的审批
-    public function shenpi(){
-        // return "111";
-        // 获取到该用户的id
-        $uid = Session::get("islogin");
-        // 获取到日志id
-        $id = request()->param("id");
-        // 查询到日志
-        $data = model("log")->find($id);
-        // dump($data['status']);exit;
-        $arr = explode(",",$data['status']);
-        $str = "";
-        foreach($arr as $k=>$v){
-          // dump($arr[$k]);
-          if($v == 0){
-            $str .= "0,";
-          }else if($v != 0 && $arr[$k-1] == 0){
-            $str .= "0,";
-          }else{
-            $str .= $v.",";
-          }
-        }
-        // return $str;
-        $strs = rtrim($str, ",");
-        if(db("log")->where("id",$id)->setField('status',$strs)){
-            return "success";
-        }else{
-            return "error";
-        }
-    }
-    // 一键审批
-    public function allshenpi(){
-      $arr = isset($_POST['arr'])?$_POST['arr']:"";
-      foreach($arr as $k=>$v){
-       $data = db("log")->where("id",$v)->find();
-        // dump($data['status']);
-        $log_arr = explode(",",$data['status']);
-        // dump($log_arr);
-        $key = '';
-        foreach ($log_arr as $k1 => $v1) {
-          if($v1 !=0){
-            $key = $k1;
-            break;
-          }
-        }
-        $log_arr[$key] = 0;
-        $logs_arr = implode(",",$log_arr);       
-        $data = db("log")->where("id",$v)->update(['status'=>$logs_arr]);
-        }
-        return "success";
-      }
+   	$row = model("user")->where("role_id","in",$arr)->select();  					      /*查询出来待审批人*/
+  	$arrs = [];
+  	foreach($row as $k1=>$v1){
+  		$arrs[] = $v1['id'];
+  	}
+  	$res = model("log")->where("user_id","in",$arrs)->where("state",0)->select();  /*查询出来待审批人的日志*/
+  	// dump($res);
+  	return view("correct",["res" => $res]);
   }
+  // 日志的添加
+  public function add(){
+  	if(request()->post()){
+  		$id = Session::get("islogin");           
+  		$username = Session::get("username");      
+  		$rolename = Session::get("rolename");       
+  		$row = model("role")->where("name",$rolename)->find();
+  		$pid = $row['pid'];							
+  		$data['title'] = $rolename;													              /*添加日志人的角色*/
+        $data['name'] = $username;													           /*添加日志人的用户名*/
+        $data['content'] = request()->param("content");								 /*日志内容*/
+        $data['time'] = time();                       								  /*时间*/
+        $data['user_id'] = $id;														             /*日志发表人的id*/
+        $data['status'] = $pid;														             /*该日志发表人的父级id*/
+        $data['state'] = 0;															                /*日志是否审核过,0未审核*/
+        if(model("log")->allowField(true)->save($data)){
+        	return array("state" => 200, "msg" =>"日志添加成功");
+        }else{
+        	return array("state" => 201, "msg" =>"日志添加失败");
+        }
+  	}
+  	return view("add");
+  }
+  // 日志的审批
+  public function shenpi(){
+  	$id = $_POST['id'];
+    $uid = Session::get("islogin");
+    $data = model("log")->where("id",$id)->find();
+    $log_id = $data['user_id'];
+    $dataw['time'] = time();                                    /*审批时间*/
+    $dataw['log_id'] = intval($id);                              /*日志id*/
+    $dataw['shenpi_id'] = $uid;                                  /*审批人id*/  
+  	$dataw['user_log_id'] = $log_id;                             /*用户日志id*/
+    // $data = model("log")->where("id",$id)->find();
+  	if(model("log")->where("id",$id)->update(["state" => 1])){
+      db("loghostory")->insert($dataw);
+  		return array("state" => 200, "msg" => "批阅完成");
+  	}else{
+  		return ["state" => 201, "msg" => "批阅失败"];
+  	}
+  }
+  // 批阅历史
+  public function history(){
+  	$id = Session::get("islogin");
+  	$user = model("user")->where("id",$id)->find();											                      /*查询出来当前用户*/
+	$role_next = model("role")->where("pid",$user['role_id'])->select();  					            /*查询出来当前部门的下一个部门*/
+  	$arrs = [];  
+  	foreach($role_next as $k=>$v){
+  		$arrs[] = $v['id'];
+  	}
+  	$user_next = model("user")->where("role_id","in",$arrs)->select();						             /*查询出来当前用户所管辖的用户*/
+  	$arrs_log = [];
+  	foreach($user_next as $k1 => $v1){
+  		$arrs_log[] = $v1['id'];
+  	}
+  	$log_one = model("log")->where("user_id","in",$arrs_log)->where("state",1)->select();	   /*查询出来当前用户管辖的所有审批过的日志*/
+  	$role_all = getList(model("role")->where("pid","in",$arrs)->select());
+  	// dump($role_all);
+  	$this->assign([
+  		"log_one" => $log_one,
+  		]);
+  	return view("history");
+  }
+  /*全部日志的便利*/
+  public function all(){
+  	$uid = Session::get("islogin");
+  	$user = model("user")->where("id",$uid)->find();
+  	// dump($user);
+  	$role = getList(model('role')->select(),$user['role_id']);
+  	// dump($role);
+  	$arr = [];
+  	foreach($role as $k=>$v){
+  		$arr[] = $v['id'];
+  	}
+  	$user_all = model("user")->where("role_id","in",$arr)->select();
+  	$arrs = [];
+  	foreach($user_all as $k1=>$v1){
+  		$arrs[] = $v1['id'];
+  	}
+  	$log_all = model("log")->where("user_id","in",$arrs)->select();
+  	// dump($log_all);
+  	return view("all",['log_all' =>$log_all]);
+  }
+}
 
-
+?>

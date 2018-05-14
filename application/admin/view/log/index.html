@@ -2,7 +2,7 @@
 <title>日志管理</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 日志中心 <span class="c-gray en">&gt;</span> 日志管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 日志列表 <span class="c-gray en">&gt;</span> 我的日志 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 	<span class="l">
@@ -14,7 +14,10 @@
 	{if condition="$use['roles_id'] eq 1"}
 	<a href="javascript:;" onclick=member_history('审批历史','{:url('history')}') class="btn btn-primary radius"><i class="Hui-iconfont">&#xe62b;</i>审批历史</a>
 	{else/}{/if}
-
+	
+	{if condition="$use['roles_id'] eq 1"}
+	<a href="javascript:;" onclick=member_history('所有日志','{:url('all')}') class="btn btn-primary radius"><i class="Hui-iconfont">&#xe62b;</i>所有日志</a>
+	{else/}{/if}
 	</span>
  </div>
 	<div class="mt-20">

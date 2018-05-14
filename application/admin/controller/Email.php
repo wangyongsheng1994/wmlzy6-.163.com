@@ -8,8 +8,11 @@ class Email extends Controller
 		$username = Session::get("username");
 		db("email")->where("receive_id",3)->where("send_id",3)->delete();
 		$data = db("email")->where("receive",$username)->where("receive_id",1)->select();
+		// dump($data);
+		$tot = db("email")->where("receive",$username)->where("receive_id",1)->count();
+		// return $tot;
 		$arr=["1"=>"接收成功"];
-		return view("index",['data'=>$data,"arr"=>$arr]);
+		return view("index",['data'=>$data,"arr"=>$arr,"tot"=>$tot]);
 	}
 	public function add(){
 		$data = getList(model('role')->with('Users')->select());
@@ -62,8 +65,9 @@ class Email extends Controller
 	public function send(){
 		$username = Session::get("username");
 		$data = db("email")->where("send",$username)->where("send_id",1)->select();
+		$count = db("email")->where("send",$username)->where("send_id",1)->count();
 		$arr = ['0'=>"已送达","1"=>"已读取"];
-		return view("send",['data'=>$data,"arr"=>$arr]);
+		return view("send",['data'=>$data,"arr"=>$arr,"count"=>$count]);
 	}
 	//查看详情 
 	public function detail($id){

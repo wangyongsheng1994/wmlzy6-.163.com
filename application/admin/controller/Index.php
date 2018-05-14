@@ -17,8 +17,37 @@ class Index extends Allow
     }
 	public function index(){
 		$aside=$this->getcatebypid(0);
-		// dump($aside);exit;
-		return view("index",['aside'=>$aside]);
+        /* ************************************ 
+        日志的审批通知
+        **************************************** */
+        $uid = Session::get("islogin");
+        $user = model("user")->where("id",$uid)->find();
+        $data = model("role")->where("pid",$user['role_id'])->select();                 /*查询出来所有下级的角色*/
+        $arr = [];
+        foreach($data as $k=>$v){
+            $arr[] = $v['id'];
+        }
+        $row = model("user")->where("role_id","in",$arr)->select();                     /*查询出来待审批人*/
+        $arrs = [];
+        foreach($row as $k1=>$v1){
+            $arrs[] = $v1['id'];
+        }
+        $log_tot = model("log")->where("user_id","in",$arrs)->where("state",0)->count();  /*未审批数量*/
+    		// dump($aside);exit;
+		/* ********************************
+            邮件未读取      
+        *********************************** */
+        $username = Session::get("username");
+        $email_tot = db("email")->where("receive",$username)->where("receive_id",1)->where("state",0)->count();
+        // dump($email_tot);
+        $tot = $log_tot + $email_tot;
+        $this->assign([
+            "log_tot" => $log_tot,
+            'aside'=>$aside,
+            'email_tot' => $email_tot,
+            "tot" =>$tot
+            ]);
+        return view("index");
 	}
 	 public function welcome(){
     	$id=Session::get('islogin');
@@ -63,5 +92,36 @@ class Index extends Allow
             }
         }
         return view("info",['data'=>$data]);
+    }
+    /*
+        审批通知
+     */
+    public function shenpi(){
+         /*审批人的id*/
+        $uid = Session::get("islogin");
+        $user = model("user")->where("id",$uid)->find();
+        $data = model("role")->where("pid",$user['role_id'])->select();                 /*查询出来所有下级的角色*/
+        $arr = [];
+        foreach($data as $k=>$v){
+            $arr[] = $v['id'];
+        }
+        $row = model("user")->where("role_id","in",$arr)->select();                           /*查询出来待审批人*/
+        $arrs = [];
+        foreach($row as $k1=>$v1){
+            $arrs[] = $v1['id'];
+        }
+        $res = model("log")->where("user_id","in",$arrs)->where("state",0)->select();  /*查询出来待审批人的日志*/
+        // dump($res);die;
+        return view("shenpi",["res" => $res]);
+    }
+    /*
+        邮件未读的便利
+     */
+    public function email(){
+        $username = Session::get("username");
+        db("email")->where("receive_id",3)->where("send_id",3)->delete();
+        $data = db("email")->where("receive",$username)->where("receive_id",1)->where("state",0)->select();
+        $this->assign("data",$data);
+        return view("email");
     }
 }

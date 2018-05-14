@@ -36,6 +36,22 @@
 			<input type="text" class="input-text" placeholder="@" value="{$data['email']}" name="email" id="email">
 		</div>
 	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>地址：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" placeholder="" value="{$data['address']}" name="address" id="address">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2">头像：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<div class="uploader-thum-container">
+					<div id="fileList" class="uploader-list"><img id="imageview" width=80px border=0 src="{$data.image}"></div>
+					 
+					<div > <input type="file" name="image" id="fileupload" ></div>
+				</div>
+			</div>
+	</div>
 	<input type="hidden" name="id" value="{$data['id']}">
 	<div class="row cl">
 		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
@@ -62,7 +78,7 @@ $(function(){
 	});
 	
 	$("#form-admin-add").validate({
-		rules:{
+		/*rules:{
 			username:{
 				required:true,
 				minlength:4,
@@ -89,7 +105,7 @@ $(function(){
 			adminRole:{
 				required:true,
 			},
-		},
+		},*/
 		onkeyup:false,
 		focusCleanup:true,
 		success:"valid",
@@ -98,11 +114,12 @@ $(function(){
                 type: 'post',
                 url: "{:url('edit')}" ,
                 success: function(data){
-	                layer.msg(data,{icon:1,time:1500},function(){
-	                    parent.window.location.href="{:url('index')}";
-	                    var index=parent.layer.getFrameIndex(window.name);
-	                    parent.layer.close(index);
-	                });	
+	                // layer.msg(data,{icon:1,time:1500},function(){
+	                //     parent.window.location.href="{:url('index')}";
+	                //     var index=parent.layer.getFrameIndex(window.name);
+	                //     parent.layer.close(index);
+	                // });	
+                	alert(data);
                 },
                 error: function(XmlHttpRequest, textStatus, errorThrown){
                     layer.msg('很遗憾!添加失败',{icon:1,time:1000});
@@ -110,6 +127,16 @@ $(function(){
             });
         }
 	});
+	 $("#fileupload").change(function() {  
+        var $file = $(this);
+        var objUrl = $file[0].files[0];  
+        //获得一个http格式的url路径:mozilla(firefox)||webkit or chrome  
+        var windowURL = window.URL || window.webkitURL;  
+        //createObjectURL创建一个指向该参数对象(图片)的URL  
+        var dataURL;
+        dataURL = windowURL.createObjectURL(objUrl);  
+        $("#imageview").attr("src",dataURL);  
+    });  
 });
 </script> 
 <!--/请在上方写此页面业务相关的脚本-->

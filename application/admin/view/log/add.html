@@ -84,14 +84,14 @@ $(function(){
                 url: "{:url('add')}" ,
                 success: function(data){
 		                // alert(data);
-	                layer.msg(data,{icon:1,time:1500},function(){
+	                layer.msg(data.msg,{icon:1,time:1500},function(){
 	                    parent.window.location.href="{:url('index')}";
 	                    var index=parent.layer.getFrameIndex(window.name);
 	                    parent.layer.close(index);
 	                });	
                 },
                 error: function(XmlHttpRequest, textStatus, errorThrown){
-                    layer.msg('很遗憾!添加失败',{icon:1,time:1000});
+                    layer.msg(data.msg,{icon:6,time:1300});
                 }
             });
         }

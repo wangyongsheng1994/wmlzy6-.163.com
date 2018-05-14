@@ -52,7 +52,17 @@
 			<script type="text/javascript">_init_area();</script>
 		</div>
 		 <div id="show"></div>
-		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2">头像：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<div class="uploader-thum-container">
+					<div id="fileList" class="uploader-list"><img id="imageview" width=80px border=0 src=''></div>
+					 
+					<div > <input type="file" name="image" id="fileupload" ></div>
+				</div>
+			</div>
+	</div>
 	<div class="row cl">
 		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
 			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
@@ -81,7 +91,7 @@ $(function(){
 		rules:{
 			username:{
 				required:true,
-				minlength:4,
+				minlength:2,
 				maxlength:16
 			},
 			password:{
@@ -127,6 +137,18 @@ $(function(){
             });
         }
 	});
+	 /*原理是把本地图片路径："D(盘符):/image/..."转为"http://..."格式路径来进行显示图片*/  
+    $("#fileupload").change(function() {  
+        var $file = $(this);
+        var objUrl = $file[0].files[0];  
+        //获得一个http格式的url路径:mozilla(firefox)||webkit or chrome  
+        var windowURL = window.URL || window.webkitURL;  
+        //createObjectURL创建一个指向该参数对象(图片)的URL  
+        var dataURL;
+        dataURL = windowURL.createObjectURL(objUrl);  
+        $("#imageview").attr("src",dataURL);  
+    });  
+
 });
 
 
@@ -143,6 +165,7 @@ var showArea = function(){
 							}
 
 Gid('s_county').setAttribute('onchange','showArea()');
+
 </script> 
 <!--/请在上方写此页面业务相关的脚本-->
 </body>
